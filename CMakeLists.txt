@@ -38,11 +38,12 @@ endif()
 
 # Add program source code files.
 add_executable(tetris
-    src/tetris.cpp
+    src/Tetris.cpp
+    lib/Graphics.cpp
 )
 
 # Add include directories to a target
-#target_include_directories(tetris PUBLIC include)
+target_include_directories(tetris PRIVATE include)
 #target_include_directories(tetris PUBLIC /usr/include/)
 target_link_libraries(tetris PRIVATE ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 
