@@ -4,7 +4,7 @@
 #include "Config.hpp"
 #include "DrawableObject.hpp"
 
-class Playfield : private Graphics::DrawableObject {
+class Playfield : public Graphics::DrawableObject {
 
     /// MEMBER VARIABLES ///
 
