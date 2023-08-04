@@ -15,7 +15,7 @@ namespace Graphics {
 
         // a virtual method that must be implemented by the inheriting class.
         // This function determines what is drawn on screen for the inheriting object.
-        virtual void display();
+        virtual void display() {};
 
     }; // End of DrawableObject class.
 
