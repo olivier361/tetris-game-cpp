@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_HPP
-#define GRAPHICS_HPP
+#ifndef TETRIS_GRAPHICS_HPP
+#define TETRIS_GRAPHICS_HPP
 
 #include <GL/gl.h>
 #include <GL/glu.h>

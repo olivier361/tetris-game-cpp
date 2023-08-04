@@ -1,4 +1,4 @@
-#include "Graphics.hpp"
+#include "TetrisGraphics.hpp"
 
 Graphics::TetrisGraphics::TetrisGraphics(int xSize, int ySize, const char* windowName) {
     

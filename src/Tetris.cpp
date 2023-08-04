@@ -1,10 +1,9 @@
-// TODO: Add code here.
-// NOTE: This is the entry point for the program.
-
 #include <iostream>
 #include <string>
 #include "Config.hpp"
-#include "Graphics.hpp"
+#include "TetrisGraphics.hpp"
+
+// NOTE: This is the entry point for the program.
 
 int main(int argc, char** argv) {
     std::cout << "Launching game...\n";
