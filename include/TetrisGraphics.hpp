@@ -55,10 +55,9 @@ namespace Graphics {
         ///        left justified starting at the given coordinates.
         /// @param tlx: top-left x coordinate.
         /// @param tly: top-left y coordinate.
-        /// @param fontSize: the font size in pixels.
         /// @param rgba: the color for drawing the text. 
         /// @param text: the string to render.
-        static void drawText(double tlx, double tly, int fontSize, double rgba[4], const char text[]);
+        static void drawText(double tlx, double tly, double rgba[4], const char text[]);
 
         // TODO: Write graphics methods to draw things
 

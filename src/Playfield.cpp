@@ -18,14 +18,20 @@ Playfield::Playfield(int xPos, int yPos) {
 void Playfield::display() {
 
     // TODO: Draw the playfield using methods from TetrisGraphics.hpp
-    
+
     // TODO: Add coordinate offset based on playfield original position.
+
+    double color0[4] = {1.0, 0.0, 0.0, 1.0};
+    Graphics::TetrisGraphics::drawSquare(0.0, 0.0, 0.3, -0.3, color0); // perfect square. top-left at origin.
 
     double color1[4] = {0.5, 0.0, 0.5, 1.0};
     Graphics::TetrisGraphics::drawSquare(0.1, 0.2, 0.4, 0.6, color1);
 
     double color2[4] = {0.5, 0.5, 0.0, 1.0};
     Graphics::TetrisGraphics::drawSquareOutline(0.8, 0.7, 0.95, 0.9, 3, color2);
+
+    double color3[4] = {1.0, 1.0, 1.0, 1.0};
+    Graphics::TetrisGraphics::drawText(-0.6, -0.8, color3, "This is a drawText test");
 
 }
 
