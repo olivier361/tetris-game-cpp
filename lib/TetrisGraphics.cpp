@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <iostream> // TODO: remove only used for a test
 #include "TetrisGraphics.hpp"
 #include "../src/Config.hpp"
 
@@ -46,7 +45,7 @@ int Graphics::TetrisGraphics::curFPS;
 /// @param brx: bottom-right x coordinate.
 /// @param bry: bottom-right y coordinate.
 /// @param rgba: the color for drawing the square.
-void Graphics::TetrisGraphics::drawSquare(double tlx, double tly, double brx, double bry, double rgba[4]) {
+void Graphics::TetrisGraphics::drawSquare(double tlx, double tly, double brx, double bry, const double rgba[4]) {
     glColor4d(rgba[0], rgba[1], rgba[2], rgba[3]);
     glBegin(GL_QUADS);
         glVertex2d(tlx, tly);
@@ -65,7 +64,7 @@ void Graphics::TetrisGraphics::drawSquare(double tlx, double tly, double brx, do
 /// @param bry: bottom-right y coordinate.
 /// @param lineWidth: the width in pixels of the outline.
 /// @param rgba: the color for drawing the square.
-void Graphics::TetrisGraphics::drawSquareOutline(double tlx, double tly, double brx, double bry, double lineWidth, double rgba[4]) {
+void Graphics::TetrisGraphics::drawSquareOutline(double tlx, double tly, double brx, double bry, double lineWidth, const double rgba[4]) {
     glColor4d(rgba[0], rgba[1], rgba[2], rgba[3]);
     glLineWidth(lineWidth);
     glBegin(GL_LINE_LOOP);
@@ -82,7 +81,7 @@ void Graphics::TetrisGraphics::drawSquareOutline(double tlx, double tly, double 
 /// @param tly: top-left y coordinate.
 /// @param rgba: the color for drawing the text. 
 /// @param text: the string to render.
-void Graphics::TetrisGraphics::drawText(double tlx, double tly, double rgba[4], const char text[]) {
+void Graphics::TetrisGraphics::drawText(double tlx, double tly, const double rgba[4], const char text[]) {
     glColor4d(rgba[0], rgba[1], rgba[2], rgba[3]);
     glRasterPos2d(tlx, tly);
     glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)text);

@@ -49,7 +49,7 @@ namespace Graphics {
         /// @param brx: bottom-right x coordinate.
         /// @param bry: bottom-right y coordinate.
         /// @param rgba: the color for drawing the square.
-        static void drawSquare(double tlx, double tly, double brx, double bry, double rgba[4]);
+        static void drawSquare(double tlx, double tly, double brx, double bry, const double rgba[4]);
 
         /// @brief Renders the outline of a square on-screen
         ///        given the top-left and bottom-right coordinates
@@ -60,7 +60,7 @@ namespace Graphics {
         /// @param bry: bottom-right y coordinate.
         /// @param lineWidth: the width in pixels of the outline.
         /// @param rgba: the color for drawing the square.
-        static void drawSquareOutline(double tlx, double tly, double brx, double bry, double lineWidth, double rgba[4]);
+        static void drawSquareOutline(double tlx, double tly, double brx, double bry, double lineWidth, const double rgba[4]);
 
         /// @brief Displays the given string on-screen with the text being
         ///        left justified starting at the given coordinates.
@@ -68,7 +68,7 @@ namespace Graphics {
         /// @param tly: top-left y coordinate.
         /// @param rgba: the color for drawing the text. 
         /// @param text: the string to render.
-        static void drawText(double tlx, double tly, double rgba[4], const char text[]);
+        static void drawText(double tlx, double tly, const double rgba[4], const char text[]);
 
         // TODO: Write graphics methods to draw things
 

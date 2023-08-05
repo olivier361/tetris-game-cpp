@@ -10,11 +10,15 @@ class Playfield : public Graphics::DrawableObject {
 
     private:
 
+    // The matrix that keeps track of what blocks are currently on the playing grid.
     Config::BlockColors mMatrix[Config::playfieldBlockHeight][Config::playfieldBlockWidth];
 
-    int mScore;
-    int mHighScore;
-    int mLinesCleared;
+    int mOffsetX; // The X pixel coordinate offset for the top-right corner of the playfield object.
+    int mOffsetY; // The Y pixel coordinate offset for the top-right corner of the playfield object.
+
+    int mScore;         // Keeps track of the current score.
+    int mHighScore;     // Keeps track of the highest recorded score since the program was launched.
+    int mLinesCleared;  // Keeps track of the total amount of lines cleared in the current game.
 
 
     /// CONSTRUCTORS ///
