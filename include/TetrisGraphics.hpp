@@ -12,6 +12,17 @@ namespace Graphics {
 
     class TetrisGraphics {
 
+        /// PRIVATE STATIC VARIABLES ///
+
+        private:
+
+        static int timeAtLastFrameDraw; // the time (in milliseconds) since program init taken after rendering the last frame.
+        static int frameDrawnPerSecond; // a count of how many frames were rendered in the last second.
+        static int curFPS; // the current FPS value.
+
+
+        /// CONSTRUCTORS ///
+
         public:
 
         // The graphics window is not default constructible.

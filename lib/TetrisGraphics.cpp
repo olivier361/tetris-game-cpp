@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <iostream> // TODO: remove only used for a test
 #include "TetrisGraphics.hpp"
 #include "../src/Config.hpp"
 
@@ -29,6 +31,9 @@ void Graphics::TetrisGraphics::displayLoop() {
 
 std::vector<Graphics::DrawableObject *> Graphics::TetrisGraphics::sDrawableObjectList;
 
+int Graphics::TetrisGraphics::timeAtLastFrameDraw;
+int Graphics::TetrisGraphics::frameDrawnPerSecond;
+int Graphics::TetrisGraphics::curFPS;
 
 /// STATIC FUNCTIONS ///
 
@@ -132,6 +137,46 @@ void Graphics::TetrisGraphics::displayUpdate() {
     // glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
     glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)"Sample Text: 1000");
     
+
+    // Compute and display framerate:
+
+    int timeSinceBoot = glutGet(GLUT_ELAPSED_TIME);
+
+    // int fps;
+
+    // NOTE: This method works but its hard to read since the number is updated every frame.
+    /*
+    if (timeSinceBoot - timeAtLastFrameDraw > 0) { // avoid division by zero
+        fps = (int) (1000.0 / (timeSinceBoot - timeAtLastFrameDraw));
+        // fps = 15;
+    }
+    else {
+        fps = 9999; // arbitrarily high number
+    }
+    */
+
+    ++frameDrawnPerSecond;
+
+    if (timeSinceBoot - timeAtLastFrameDraw >= 1000) {
+        curFPS = (int) (frameDrawnPerSecond * (1000.0 / (double)(timeSinceBoot - timeAtLastFrameDraw)));
+        // std::cout << "fps: " << curFPS << "\n";
+        frameDrawnPerSecond = 0;
+        timeAtLastFrameDraw = timeSinceBoot;
+    }
+
+    // fps = 1234;
+
+    char fpsString[128];
+    sprintf(fpsString,"AVG FPS: %4d", curFPS);
+
+    // TODO: Revert to this
+    // timeAtLastFrameDraw = timeSinceBoot; // update last drawn frame time to current frame time.
+    // ++timeAtLastFrameDraw;
+
+    glColor3f(0.0, 0.0, 1.0);
+    glRasterPos2d(10, Config::windowSizeY - 10);
+    glutBitmapString(GLUT_BITMAP_8_BY_13, (const unsigned char*)fpsString);
+
     glFlush();
     glutPostRedisplay();
 }
