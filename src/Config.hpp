@@ -5,6 +5,8 @@ namespace Config {
 
     // These const variables determine some important parameters for the Tetris game.
 
+    constexpr bool displayFPS = true; // determines whether or not an FPS counter is displayed in the bottom-left corner of the screen.
+
     constexpr char appName[] = "Tetris"; // The name of the app to be displayed on the window header.
 
     constexpr int windowSizeX = 1280; // the width of the graphics window in pixels.

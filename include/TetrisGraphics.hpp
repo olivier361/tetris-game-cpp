@@ -16,9 +16,9 @@ namespace Graphics {
 
         private:
 
-        static int timeAtLastFrameDraw; // the time (in milliseconds) since program init taken after rendering the last frame.
-        static int frameDrawnPerSecond; // a count of how many frames were rendered in the last second.
-        static int curFPS; // the current FPS value.
+        static int timeAtLastFPSMesure; // the time (in milliseconds) since program was launched. Updated after each time the FPS is recomputed.
+        static int framesDrawnInLastSecond; // a count of how many frames were rendered in the last second.
+        static int curFPS; // the current average FPS value for the within the last second.
 
 
         /// CONSTRUCTORS ///
