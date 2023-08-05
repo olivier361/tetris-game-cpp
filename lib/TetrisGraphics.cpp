@@ -1,4 +1,5 @@
 #include "TetrisGraphics.hpp"
+#include "../src/Config.hpp"
 
 Graphics::TetrisGraphics::TetrisGraphics(int xSize, int ySize, const char* windowName) {
     
@@ -87,6 +88,17 @@ void Graphics::TetrisGraphics::drawText(double tlx, double tly, double rgba[4], 
 void Graphics::TetrisGraphics::displayUpdate() {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
+
+    // This makes sets the viewport to be of a fixed size no matter
+    // if the window shape is rezised by the user.
+    // Doing so avoids rendered shapes to be squished/stretched when
+    // changing the window's aspect ratio.
+    glViewport(0, 0, Config::windowSizeX, Config::windowSizeY);
+
+    // Transforms the coordinates used to render shapes from relative coordinates
+    // (-1.0 <= x <= 1.0, -1.0 <= y <= 1.0) to using exact pixel coordinates
+    // (0 <= x <= 1279, 0 <= y <= 719).
+    glOrtho(0.0, Config::windowSizeX, Config::windowSizeY, 0.0, 0.0, 1.0);
 
     // draw stuff here
     // std::cout << "inside display\n";
