@@ -75,7 +75,7 @@ void Graphics::TetrisGraphics::drawSquareOutline(double tlx, double tly, double 
     glEnd();
 }
 
-/// @brief Displays the given string on-screen with the text being
+/// @brief Displays the given string on-screen with the Helvetica 18 text being
 ///        left justified starting at the given coordinates.
 /// @param tlx: top-left x coordinate.
 /// @param tly: top-left y coordinate.
@@ -87,6 +87,17 @@ void Graphics::TetrisGraphics::drawText(double tlx, double tly, const double rgb
     glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)text);
 }
 
+/// @brief Displays the given string on-screen with the Times Roman 24 text being
+///        left justified starting at the given coordinates.
+/// @param tlx: top-left x coordinate.
+/// @param tly: top-left y coordinate.
+/// @param rgba: the color for drawing the text. 
+/// @param text: the string to render.
+void Graphics::TetrisGraphics::drawHeader(double tlx, double tly, const double rgba[4], const char text[]) {
+    glColor4d(rgba[0], rgba[1], rgba[2], rgba[3]);
+    glRasterPos2d(tlx, tly);
+    glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (const unsigned char*)text);
+}
 
 /// HELPER FUNCTIONS ///
 

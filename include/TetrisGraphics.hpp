@@ -62,13 +62,21 @@ namespace Graphics {
         /// @param rgba: the color for drawing the square.
         static void drawSquareOutline(double tlx, double tly, double brx, double bry, double lineWidth, const double rgba[4]);
 
-        /// @brief Displays the given string on-screen with the text being
+        /// @brief Displays the given string on-screen with the Helvetica 18 text being
         ///        left justified starting at the given coordinates.
         /// @param tlx: top-left x coordinate.
         /// @param tly: top-left y coordinate.
         /// @param rgba: the color for drawing the text. 
         /// @param text: the string to render.
         static void drawText(double tlx, double tly, const double rgba[4], const char text[]);
+
+        /// @brief Displays the given string on-screen with the Times Roman 24 text being
+        ///        left justified starting at the given coordinates.
+        /// @param tlx: top-left x coordinate.
+        /// @param tly: top-left y coordinate.
+        /// @param rgba: the color for drawing the text. 
+        /// @param text: the string to render.
+        static void drawHeader(double tlx, double tly, const double rgba[4], const char text[]);
 
         // TODO: Write graphics methods to draw things
 
