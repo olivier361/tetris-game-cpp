@@ -17,7 +17,7 @@ namespace Config {
     constexpr int playfieldBlockWidth = 10;   // the number of blocks for the grid width.
     constexpr int playfieldBlockHeight = 20;  // the number of blocks for the grid height.
 
-    enum class BlockColors {
+    enum class BlockColor {
         Empty,
         Red,
         Green,

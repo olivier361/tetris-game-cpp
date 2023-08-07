@@ -1,6 +1,5 @@
 #include <cstdio>
 #include "TetrisGraphics.hpp"
-#include "../src/Config.hpp"
 
 Graphics::TetrisGraphics::TetrisGraphics(int xSize, int ySize, const char* windowName) {
     
@@ -33,6 +32,24 @@ std::vector<Graphics::DrawableObject *> Graphics::TetrisGraphics::sDrawableObjec
 int Graphics::TetrisGraphics::timeAtLastFPSMesure;
 int Graphics::TetrisGraphics::framesDrawnInLastSecond;
 int Graphics::TetrisGraphics::curFPS;
+
+const double Graphics::TetrisGraphics::sColorRed[4] = {1.0, 0.0, 0.0, 1.0};       // #FF0000 Red
+const double Graphics::TetrisGraphics::sColorGreen[4] = {0.0, 1.0, 0.0, 1.0};     // #00FF00 Green
+const double Graphics::TetrisGraphics::sColorBlue[4] = {0.0, 0.0, 1.0, 1.0};      // #0000FF Blue
+const double Graphics::TetrisGraphics::sColorOrange[4] = {1.0, 0.5, 0.0, 1.0};    // #FF7F00 Orange
+const double Graphics::TetrisGraphics::sColorPurple[4] = {0.5, 0.0, 0.5, 1.0};    // #800080 Purple
+const double Graphics::TetrisGraphics::sColorYellow[4] = {1.0, 1.0, 0.0, 1.0};    // #FFFF00 Yellow
+const double Graphics::TetrisGraphics::sColorCyan[4] = {0.0, 1.0, 1.0, 1.0};      // #00FFFF Cyan
+const double Graphics::TetrisGraphics::sColorGray[4] = {0.42, 0.42, 0.42, 1.0};   // #6D6D6D Gray
+
+const double Graphics::TetrisGraphics::sColorRedOutline[4] = {0.76, 0.0, 0.0, 1.0};       // #C30000 Dark Red
+const double Graphics::TetrisGraphics::sColorGreenOutline[4] = {0.0, 0.76, 0.0, 1.0};     // #00C300 Dark Green
+const double Graphics::TetrisGraphics::sColorBlueOutline[4] = {0.0, 0.0, 0.72, 1.0};      // #0000B9 Dark Blue
+const double Graphics::TetrisGraphics::sColorOrangeOutline[4] = {0.86, 0.43, 0.0, 1.0};   // #DC6D00 Dark Orange
+const double Graphics::TetrisGraphics::sColorPurpleOutline[4] = {0.34, 0.0, 0.34, 1.0};   // #570057 Dark Purple
+const double Graphics::TetrisGraphics::sColorYellowOutline[4] = {0.8, 0.8, 0.0, 1.0};     // #CBCB00 Dark Yellow
+const double Graphics::TetrisGraphics::sColorCyanOutline[4] = {0.0, 0.68, 0.68, 1.0};     // #00ADAD Dark Cyan
+const double Graphics::TetrisGraphics::sColorGrayOutline[4] = {0.25, 0.25, 0.25, 1.0};    // #404040 Dark Gray
 
 
 /// STATIC FUNCTIONS ///
@@ -73,6 +90,60 @@ void Graphics::TetrisGraphics::drawSquareOutline(double tlx, double tly, double 
         glVertex2d(brx, bry);
         glVertex2d(tlx, bry);
     glEnd();
+}
+
+/// @brief Renders a Tetris block of the given Config::BlockColor
+/// @param tlx: top-left x coordinate.
+/// @param tly: top-left y coordinate.
+/// @param blockColor: the Config::BlockColor for drawing the block.
+void Graphics::TetrisGraphics::drawBlock(double tlx, double tly, const Config::BlockColor blockColor) {
+    const int outlineWidth = 3;
+    const double (*pPrimaryColor)[4];
+    const double (*pOutlineColor)[4];
+
+    // Select correct RGBA values to draw based on blockColor parameter.
+    switch (blockColor) {
+        case Config::BlockColor::Red:
+            pPrimaryColor = &sColorRed;
+            pOutlineColor = &sColorRedOutline;
+            break;
+        case Config::BlockColor::Green:
+            pPrimaryColor = &sColorGreen;
+            pOutlineColor = &sColorGreenOutline;
+            break;
+        case Config::BlockColor::Blue:
+            pPrimaryColor = &sColorBlue;
+            pOutlineColor = &sColorBlueOutline;
+            break;
+        case Config::BlockColor::Orange:
+            pPrimaryColor = &sColorOrange;
+            pOutlineColor = &sColorOrangeOutline;
+            break;
+        case Config::BlockColor::Purple:
+            pPrimaryColor = &sColorPurple;
+            pOutlineColor = &sColorPurpleOutline;
+            break;
+        case Config::BlockColor::Yellow:
+            pPrimaryColor = &sColorYellow;
+            pOutlineColor = &sColorYellowOutline;
+            break;
+        case Config::BlockColor::Cyan:
+            pPrimaryColor = &sColorCyan;
+            pOutlineColor = &sColorCyanOutline;
+            break;
+        case Config::BlockColor::Gray:
+            pPrimaryColor = &sColorGray;
+            pOutlineColor = &sColorGrayOutline;
+            break;
+        case Config::BlockColor::Empty:
+        default:
+            return; // nothing to draw for empty block.
+    }
+
+    // draw the block with the chosen color.
+    drawSquare(tlx, tly, tlx + Config::blockSizePx, tly + Config::blockSizePx, *pOutlineColor); // draw outline.
+    drawSquare(tlx + outlineWidth, tly + outlineWidth,
+        tlx - outlineWidth + Config::blockSizePx, tly - outlineWidth + Config::blockSizePx, *pPrimaryColor); // draw inside block.
 }
 
 /// @brief Displays the given string on-screen with the Helvetica 18 text being

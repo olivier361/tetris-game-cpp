@@ -7,7 +7,7 @@ Playfield::Playfield(int xPos, int yPos) {
     // "zero" initialize the play matrix with empty blocks.
     for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
         for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
-            mMatrix[i][j] = Config::BlockColors::Empty;
+            mMatrix[i][j] = Config::BlockColor::Empty;
         }
     }
 
@@ -68,6 +68,15 @@ SPACE - Hard drop");
                 gray);
         }
     }
+
+    // TODO: Remove later. just a test
+    Graphics::TetrisGraphics::drawBlock(490, 60, Config::BlockColor::Orange);
+    Graphics::TetrisGraphics::drawBlock(520, 60, Config::BlockColor::Orange);
+    Graphics::TetrisGraphics::drawBlock(490, 90, Config::BlockColor::Orange);
+    Graphics::TetrisGraphics::drawBlock(520, 90, Config::BlockColor::Orange);
+    Graphics::TetrisGraphics::drawBlock(580, 240, Config::BlockColor::Purple);
+    Graphics::TetrisGraphics::drawBlock(610, 240, Config::BlockColor::Green);
+    Graphics::TetrisGraphics::drawBlock(700, 240, Config::BlockColor::Gray);
 
 }
 
