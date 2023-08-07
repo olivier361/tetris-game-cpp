@@ -42,24 +42,6 @@ namespace Graphics {
         static const double sColorCyanOutline[4];
         static const double sColorGrayOutline[4];
 
-        // const double mColorRed[4] = {1.0, 0.0, 0.0, 1.0};       // #FF0000 Red
-        // const double mColorGreen[4] = {0.0, 1.0, 0.0, 1.0};     // #00FF00 Green
-        // const double mColorBlue[4] = {0.0, 0.0, 1.0, 1.0};      // #0000FF Blue
-        // const double mColorOrange[4] = {1.0, 0.5, 0.0, 1.0};    // #FF7F00 Orange
-        // const double mColorPurple[4] = {0.5, 0.0, 0.5, 1.0};    // #800080 Purple
-        // const double mColorYellow[4] = {1.0, 1.0, 0.0, 1.0};    // #FFFF00 Yellow
-        // const double mColorCyan[4] = {0.0, 1.0, 1.0, 1.0};      // #00FFFF Cyan
-        // const double mColorGray[4] = {0.42, 0.42, 0.42, 1.0};   // #6D6D6D Gray
-
-        // const double mColorRedOutline[4] = {0.76, 0.0, 0.0, 1.0};       // #C30000 Dark Red
-        // const double mColorGreenOutline[4] = {0.0, 0.76, 0.0, 1.0};     // #00C300 Dark Green
-        // const double mColorBlueOutline[4] = {0.0, 0.0, 0.72, 1.0};      // #0000B9 Dark Blue
-        // const double mColorOrangeOutline[4] = {0.86, 0.43, 0.0, 1.0};   // #DC6D00 Dark Orange
-        // const double mColorPurpleOutline[4] = {0.34, 0.0, 0.34, 1.0};   // #570057 Dark Purple
-        // const double mColorYellowOutline[4] = {0.8, 0.8, 0.0, 1.0};     // #CBCB00 Dark Yellow
-        // const double mColorCyanOutline[4] = {0.0, 0.68, 0.68, 1.0};     // #00ADAD Dark Cyan
-        // const double mColorGrayOutline[4] = {0.25, 0.25, 0.25, 1.0};    // #404040 Dark Gray
-
 
         /// CONSTRUCTORS ///
 

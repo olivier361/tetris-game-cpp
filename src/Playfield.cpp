@@ -68,15 +68,5 @@ SPACE - Hard drop");
                 gray);
         }
     }
-
-    // TODO: Remove later. just a test
-    Graphics::TetrisGraphics::drawBlock(490, 60, Config::BlockColor::Orange);
-    Graphics::TetrisGraphics::drawBlock(520, 60, Config::BlockColor::Orange);
-    Graphics::TetrisGraphics::drawBlock(490, 90, Config::BlockColor::Orange);
-    Graphics::TetrisGraphics::drawBlock(520, 90, Config::BlockColor::Orange);
-    Graphics::TetrisGraphics::drawBlock(580, 240, Config::BlockColor::Purple);
-    Graphics::TetrisGraphics::drawBlock(610, 240, Config::BlockColor::Green);
-    Graphics::TetrisGraphics::drawBlock(700, 240, Config::BlockColor::Gray);
-
 }
 
