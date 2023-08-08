@@ -29,7 +29,7 @@ class Playfield : public Graphics::DrawableObject {
     public:
 
     // Constructor creates a Playfield object which is drawn
-    // with the top left corner of the grid at the given coordinates.
+    // with the top left corner of the grid at the given pixel coordinates.
     Playfield(int xPos = 0, int yPos = 0);
 
 
@@ -40,7 +40,6 @@ class Playfield : public Graphics::DrawableObject {
     void display();
 
     /// HELPER FUNCTIONS ///
-
 
 
 

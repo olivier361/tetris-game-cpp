@@ -172,6 +172,7 @@ void Graphics::TetrisGraphics::drawHeader(double tlx, double tly, const double r
 
 /// HELPER FUNCTIONS ///
 
+// The function called by GLUT/OpenGL to render a new frame.
 void Graphics::TetrisGraphics::displayUpdate() {
     glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
@@ -187,47 +188,12 @@ void Graphics::TetrisGraphics::displayUpdate() {
     // (0 <= x <= 1279, 0 <= y <= 719).
     glOrtho(0.0, Config::windowSizeX, Config::windowSizeY, 0.0, 0.0, 1.0);
 
-    // draw stuff here
-    // std::cout << "inside display\n";
-
-    // updateTriangle(0.0, -0.0005);
-
-    // does not work
-    // set_colour(1.0, 0.0, 0.0); // dark blue
-
-    // glColor3f(1.0, 0.0, 0.0);
-
-    // // use GL_POLYGON to make a square potentially (or just two triangles)
-	// glBegin(GL_TRIANGLES);
-	// 	// glVertex2d(-0.5, 0.5);
-    //     // glVertex2d(0.5, 0.5);
-    //     // glVertex2d(0.0, -0.5);
-
-    //     glVertex2d(-0.5, 0.5);
-    //     glVertex2d(0.5, 0.5);
-    //     glVertex2d(0.0, -0.5);
-	// glEnd();
-
     // Call the display function of each registered DrawableObject.
-
-    // TODO: Remove vector implementation
-    // for (std::size_t i = 0; i < sDrawableObjectList.size(); ++i) {
-    //     sDrawableObjectList[i]->display();
-    // }
-    // list implementation
     for (auto iter = sDrawableObjectList.begin(); iter != sDrawableObjectList.end(); ++iter) {
         (*iter)->display();
-    }
-    
-    glColor3f(0.0, 1.0, 0.0);
-    // glRasterPos2i(0, -0.5);
-    glRasterPos2d(0.0, -0.5);
-    // glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)"Sample Text: 1000");
-    
+    }    
 
-    // Compute and display framerate:
-
+    // Compute and display framerate.
     if (Config::displayFPS) {
         ++framesDrawnInLastSecond;
 
@@ -253,6 +219,3 @@ void Graphics::TetrisGraphics::displayUpdate() {
     glFlush();
     glutPostRedisplay();
 }
-
-
-

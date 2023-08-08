@@ -59,6 +59,8 @@ namespace Graphics {
 
         /// STATIC VARIABLES ///
 
+        // A list that keeps track of all objects for which their display() function
+        // should be called when rendering a new image frame.
         static std::list<Graphics::DrawableObject *> sDrawableObjectList;
 
         /// STATIC FUNCTIONS ///
@@ -113,12 +115,11 @@ namespace Graphics {
 
         private:
 
+        // The function called by GLUT/OpenGL to render a new frame.
         static void displayUpdate();
 
     }; // End of TetrisGraphics class.
 
-
 } // End of Graphics namespace.
-
 
 #endif

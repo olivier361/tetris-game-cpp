@@ -1,8 +1,9 @@
 #include <cstdio>
 #include "Playfield.hpp"
 #include "TetrisGraphics.hpp"
-#include <iostream> // TODO: remove after tests
 
+// Constructor creates a Playfield object which is drawn
+// with the top left corner of the grid at the given pixel coordinates.
 Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
 
     // "zero" initialize the play matrix with empty blocks.
@@ -21,13 +22,12 @@ Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
 
     Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mTetrominoManager);
 
-
     // TODO: Just a test. Remove later.
-
     mTetrominoManager.setRandomTetromino();
-    // std::cout << mTetrominoManager.mCurShape.color.;
 }
 
+// overload the display function from DrawableObject
+// to define how the Playfield is to be drawn on screen.
 void Playfield::display() {
 
     // Setup colors needed to draw playfield object.
@@ -93,4 +93,3 @@ SPACE - Hard drop");
         }
     }
 }
-

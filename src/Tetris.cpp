@@ -9,11 +9,8 @@
 int main(int argc, char** argv) {
     std::cout << "Launching game...\n";
 
-    // TODO: Launch game loop.
-
     glutInit(&argc, argv);
     Graphics::TetrisGraphics window(Config::windowSizeX, Config::windowSizeY, Config::appName);
-
 
     Playfield* gameMatrix = new Playfield(Config::playfieldOriginX, Config::playfieldOriginY);
 

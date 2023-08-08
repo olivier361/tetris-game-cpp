@@ -20,6 +20,10 @@ namespace Config {
     constexpr int playfieldOriginX = 490;   // X pixel coordinates for the top-left of the playing grid.
     constexpr int playfieldOriginY = 60;    // Y pixel coordinates for the top-left of the playing grid.
 
+    // An enum class that lists all the available colors for Tetrominos
+    // NOTE: the color enums are sometimes used to refer to the type of
+    // shape itself since each shape is associated with a distinct color.
+    // The Empty value can be used to indicate an empty playfield cell.
     enum class BlockColor {
         Empty,
         Red,

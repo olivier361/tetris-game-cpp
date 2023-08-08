@@ -5,8 +5,6 @@
 #include "Config.hpp"
 #include "DrawableObject.hpp"
 
-// TODO: Add code here.
-
 class Tetromino : public Graphics::DrawableObject {
 
     /// TYPES ///
@@ -26,15 +24,13 @@ class Tetromino : public Graphics::DrawableObject {
         Config::BlockColor color; // the color of this type of shape.
         std::vector<GridLocation> blocks; // stores the coordinates of all blocks that make up the shape.
     
+        // Constructors.
         Shape() : color(Config::BlockColor::Empty), blocks({}) {};
         Shape(Config::BlockColor c, std::vector<GridLocation> b) : color(c), blocks(b) {}
     }; 
-    // typedef Shape;
 
 
     /// MEMBER VARIABLES ///
-
-    // const Shape test = {Config::BlockColor::Red, {}};
 
     const double mPlayfieldOriginX; // the pixel coordinates of the top-left corner of the playing grid (passed when constructed).
     const double mPlayfieldOriginY; // the pixel coordinates of the top-left corner of the playing grid (passed when constructed).
@@ -59,6 +55,11 @@ class Tetromino : public Graphics::DrawableObject {
 
     /// CONSTRUCTORS ///
 
+    // Constructor that creates a Tetromino manager object.
+    // This constructor should typically be called in Playfield.
+    // The Playfield should pass its origin pixel coordinates as parameters.
+    // This Tetromino object manages the active tetromino
+    // and how each type of tetromino is represented/drawn.
     Tetromino(double playfieldOrigX = 0.0, double playfieldOrigY = 0.0);
 
     /// MEMBER FUNCTIONS ///
@@ -67,13 +68,17 @@ class Tetromino : public Graphics::DrawableObject {
     // to define how the active block is to be drawn on screen.
     void display();
 
-    // void setupTetrominoTypesVector();
-
+    // Draws the Tetromino represented by the provided Shape struct
+    // at the given GridLocation in grid coordinates.
     void drawTetromino(const GridLocation& location, const Shape& shape);
+
+    // Draws the Tetromino shape currently set as this Tetromino object's
+    // mCurShape at mCurLocation on the grid.
     void drawTetromino();
 
+    // Updates the value of mCurShape to one of the Shapes
+    // present in the mTetrominoTypes vector, chosen at random.
     void setRandomTetromino();
-
 
 }; // End of Tetromino class.
 

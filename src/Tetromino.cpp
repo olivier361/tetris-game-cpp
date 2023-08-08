@@ -1,13 +1,15 @@
 #include "Tetromino.hpp"
 #include "TetrisGraphics.hpp"
-#include <cstdlib> // for rand function
-#include <time.h> // for time function
-#include <iostream> // TODO: for cout test
-
-// TODO: Add code here.
+#include <cstdlib>
+#include <time.h>
 
 /// CONSTRUCTORS ///
 
+// Constructor that creates a Tetromino manager object.
+// This constructor should typically be called in Playfield.
+// The Playfield should pass its origin pixel coordinates as parameters.
+// This Tetromino object manages the active tetromino
+// and how each type of tetromino is represented/drawn.
 Tetromino::Tetromino(double playfieldOrigX, double playfieldOrigY) : 
     mPlayfieldOriginX(playfieldOrigX), mPlayfieldOriginY(playfieldOrigY) {
     // setupTetrominoTypesVector();
@@ -29,18 +31,9 @@ void Tetromino::display() {
     drawTetromino(mCurLocation, mCurShape);
 }
 
-// void Tetromino::setupTetrominoTypesVector() {
-//     std::vector<GridLocation> z = {{0,0}, {0,1}, {1,1}, {-1,0}};
-//     std::vector<GridLocation> s = {{0,0}, {0,1}, {-1,1}, {1,0}};
-//     // TODO: Add remaining
-//     std::vector<GridLocation> o = {{0,0}, {0,1}, {1,0}, {1,1}};
-
-//     Shape test(Config::BlockColor::Red, {{0,0}, {0,1}, {1,1}, {-1,0}});
-
-// }
-
+// Draws the Tetromino represented by the provided Shape struct
+// at the given GridLocation in grid coordinates.
 void Tetromino::drawTetromino(const GridLocation& location, const Shape& shape) {
-    // std::cout << "I am in drawTetromino\n";
     for (std::size_t i = 0; i < shape.blocks.size(); ++i) {
         if (location.y + shape.blocks[i].y < 0) {
             // skip drawing any part of the Tetromino that is above the top border.
@@ -51,15 +44,18 @@ void Tetromino::drawTetromino(const GridLocation& location, const Shape& shape) 
         double pixelCoordinatesX = mPlayfieldOriginX + ((location.x + shape.blocks[i].x) * Config::blockSizePx);
         double pixelCoordinatesY = mPlayfieldOriginY + ((location.y + shape.blocks[i].y) * Config::blockSizePx);
 
-        // std::cout << "Calling drawBlock\n";
         Graphics::TetrisGraphics::drawBlock(pixelCoordinatesX, pixelCoordinatesY, shape.color);
     }
 }
 
+// Draws the Tetromino shape currently set as this Tetromino object's
+// mCurShape at mCurLocation on the grid.
 void Tetromino::drawTetromino() {
     drawTetromino(mCurLocation, mCurShape);
 }
 
+// Updates the value of mCurShape to one of the Shapes
+// present in the mTetrominoTypes vector, chosen at random.
 void Tetromino::setRandomTetromino() {
     std::size_t index = rand() % mTetrominoTypes.size();
     mCurShape = mTetrominoTypes[index];
