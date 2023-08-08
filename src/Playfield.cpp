@@ -1,8 +1,9 @@
 #include <cstdio>
 #include "Playfield.hpp"
 #include "TetrisGraphics.hpp"
+#include <iostream> // TODO: remove after tests
 
-Playfield::Playfield(int xPos, int yPos) {
+Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
 
     // "zero" initialize the play matrix with empty blocks.
     for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
@@ -17,6 +18,14 @@ Playfield::Playfield(int xPos, int yPos) {
     mScore = 0;
     mHighScore = 0;
     mLinesCleared = 0;
+
+    Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mTetrominoManager);
+
+
+    // TODO: Just a test. Remove later.
+
+    mTetrominoManager.setRandomTetromino();
+    // std::cout << mTetrominoManager.mCurShape.color.;
 }
 
 void Playfield::display() {
@@ -50,20 +59,35 @@ SPACE - Hard drop");
     Graphics::TetrisGraphics::drawText(815, 660, white, mainScore);
 
     // Draw decorative play grid borders (draws square behind main gray play grid).
-    Graphics::TetrisGraphics::drawSquare(490-8, 60-8, 790+8, 660+8, royalBlue);
-    Graphics::TetrisGraphics::drawSquare(490-4, 60-4, 790+4, 660+4, gray);
+    Graphics::TetrisGraphics::drawSquare(
+        mOffsetX-8,
+        mOffsetY-8,
+        mOffsetX + (Config::playfieldBlockWidth * Config::blockSizePx) + 8,
+        mOffsetY + (Config::playfieldBlockHeight * Config::blockSizePx) + 8,
+        royalBlue);
+    Graphics::TetrisGraphics::drawSquare(
+        mOffsetX-4,
+        mOffsetY-4,
+        mOffsetX + (Config::playfieldBlockWidth * Config::blockSizePx) + 4,
+        mOffsetY + (Config::playfieldBlockHeight * Config::blockSizePx) + 4,
+        gray);
 
     // Draw light gray playing grid background.
-    Graphics::TetrisGraphics::drawSquare(490, 60, 790, 660, lightGray);
+    Graphics::TetrisGraphics::drawSquare(
+        mOffsetX,
+        mOffsetY,
+        mOffsetX + (Config::playfieldBlockWidth * Config::blockSizePx),
+        mOffsetY+(Config::playfieldBlockHeight * Config::blockSizePx),
+        lightGray);
 
     // draw gray background square grid outline. 
     for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
         for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
             Graphics::TetrisGraphics::drawSquareOutline(
-                490 + (j * Config::blockSizePx),
-                60 + (i * Config::blockSizePx),
-                490 + (j * Config::blockSizePx) + Config::blockSizePx,
-                60 + (i * Config::blockSizePx) + Config::blockSizePx,
+                mOffsetX + (j * Config::blockSizePx),
+                mOffsetY + (i * Config::blockSizePx),
+                mOffsetX + (j * Config::blockSizePx) + Config::blockSizePx,
+                mOffsetY + (i * Config::blockSizePx) + Config::blockSizePx,
                 2,
                 gray);
         }

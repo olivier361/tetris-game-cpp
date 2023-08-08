@@ -27,7 +27,7 @@ void Graphics::TetrisGraphics::displayLoop() {
 
 /// STATIC VARIABLE INITIALIZATION ///
 
-std::vector<Graphics::DrawableObject *> Graphics::TetrisGraphics::sDrawableObjectList;
+std::list<Graphics::DrawableObject *> Graphics::TetrisGraphics::sDrawableObjectList;
 
 int Graphics::TetrisGraphics::timeAtLastFPSMesure;
 int Graphics::TetrisGraphics::framesDrawnInLastSecond;
@@ -209,10 +209,16 @@ void Graphics::TetrisGraphics::displayUpdate() {
 	// glEnd();
 
     // Call the display function of each registered DrawableObject.
-    for (std::size_t i = 0; i < sDrawableObjectList.size(); ++i) {
-        sDrawableObjectList[i]->display();
-    }
 
+    // TODO: Remove vector implementation
+    // for (std::size_t i = 0; i < sDrawableObjectList.size(); ++i) {
+    //     sDrawableObjectList[i]->display();
+    // }
+    // list implementation
+    for (auto iter = sDrawableObjectList.begin(); iter != sDrawableObjectList.end(); ++iter) {
+        (*iter)->display();
+    }
+    
     glColor3f(0.0, 1.0, 0.0);
     // glRasterPos2i(0, -0.5);
     glRasterPos2d(0.0, -0.5);

@@ -5,7 +5,7 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/freeglut.h>
-#include <vector>
+#include <list>
 #include "DrawableObject.hpp"
 #include "../src/Config.hpp"
 
@@ -59,7 +59,7 @@ namespace Graphics {
 
         /// STATIC VARIABLES ///
 
-        static std::vector<Graphics::DrawableObject *> sDrawableObjectList;
+        static std::list<Graphics::DrawableObject *> sDrawableObjectList;
 
         /// STATIC FUNCTIONS ///
 

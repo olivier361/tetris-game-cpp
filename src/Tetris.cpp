@@ -15,10 +15,12 @@ int main(int argc, char** argv) {
     Graphics::TetrisGraphics window(Config::windowSizeX, Config::windowSizeY, Config::appName);
 
 
-    Playfield* gameMatrix = new Playfield(); // TODO: set playfield to correct position
+    Playfield* gameMatrix = new Playfield(Config::playfieldOriginX, Config::playfieldOriginY);
 
     // Add objects we want rendered to the sDrawableObjectList.
-    window.sDrawableObjectList.push_back(gameMatrix);
+    // NOTE: Pushing into the front ensure the gameMatrix background is drawn
+    // first to avoid overriding the blocks that get rendered on top of it.
+    window.sDrawableObjectList.push_front(gameMatrix);
 
     window.displayLoop();
     

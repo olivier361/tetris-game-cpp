@@ -3,6 +3,7 @@
 
 #include "Config.hpp"
 #include "DrawableObject.hpp"
+#include "Tetromino.hpp"
 
 class Playfield : public Graphics::DrawableObject {
 
@@ -12,6 +13,8 @@ class Playfield : public Graphics::DrawableObject {
 
     // The matrix that keeps track of what blocks are currently on the playing grid.
     Config::BlockColor mMatrix[Config::playfieldBlockHeight][Config::playfieldBlockWidth];
+
+    Tetromino mTetrominoManager; // The Tetromino object associated with this Playfield instance.
 
     int mOffsetX; // The X pixel coordinate offset for the top-right corner of the playfield object.
     int mOffsetY; // The Y pixel coordinate offset for the top-right corner of the playfield object.

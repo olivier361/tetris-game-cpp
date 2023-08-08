@@ -17,6 +17,9 @@ namespace Config {
     constexpr int playfieldBlockWidth = 10;   // the number of blocks for the grid width.
     constexpr int playfieldBlockHeight = 20;  // the number of blocks for the grid height.
 
+    constexpr int playfieldOriginX = 490;   // X pixel coordinates for the top-left of the playing grid.
+    constexpr int playfieldOriginY = 60;    // Y pixel coordinates for the top-left of the playing grid.
+
     enum class BlockColor {
         Empty,
         Red,

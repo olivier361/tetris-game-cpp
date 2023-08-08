@@ -39,6 +39,7 @@ endif()
 # Add program source code files.
 add_executable(tetris
     lib/TetrisGraphics.cpp
+    src/Tetromino.cpp
     src/Playfield.cpp
     src/Tetris.cpp
 )
