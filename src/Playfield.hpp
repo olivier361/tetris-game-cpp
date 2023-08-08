@@ -9,14 +9,12 @@ class Playfield : public Graphics::DrawableObject {
 
     /// MEMBER VARIABLES ///
 
-    public:
-    
-    Tetromino mTetrominoManager; // The Tetromino object associated with this Playfield instance.
-
     private:
 
     // The matrix that keeps track of what blocks are currently on the playing grid.
     Config::BlockColor mMatrix[Config::playfieldBlockHeight][Config::playfieldBlockWidth];
+
+    Tetromino mTetrominoManager; // The Tetromino object associated with this Playfield instance.
 
     int mOffsetX; // The X pixel coordinate offset for the top-right corner of the playfield object.
     int mOffsetY; // The Y pixel coordinate offset for the top-right corner of the playfield object.
@@ -41,8 +39,16 @@ class Playfield : public Graphics::DrawableObject {
     // to define how the Playfield is to be drawn on screen.
     void display();
 
-    /// HELPER FUNCTIONS ///
+    // Move the active Tetromino to the left
+    // if there are no collisions.
+    void moveLeft();
 
+    // Move the active Tetromino to the right
+    // if there are no collisions.
+    void moveRight();
+
+
+    /// HELPER FUNCTIONS ///
 
 
 }; // End of Playfield class.

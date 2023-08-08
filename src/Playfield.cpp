@@ -93,3 +93,17 @@ SPACE - Hard drop");
         }
     }
 }
+
+// Move the active Tetromino to the left
+// if there are no collisions.
+void Playfield::moveLeft() {
+    // TODO: Add collision checks.
+    mTetrominoManager.move(-1,0);
+}
+
+// Move the active Tetromino to the right
+// if there are no collisions.
+void Playfield::moveRight() {
+    // TODO: Add collision checks.
+    mTetrominoManager.move(1,0);
+}

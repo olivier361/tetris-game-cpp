@@ -61,16 +61,14 @@ void Tetromino::setRandomTetromino() {
     mCurShape = mTetrominoTypes[index];
 }
 
-// Move the active Tetromino to the left.
+// Moves the active Tetromino from its current position
+// incremented by the provided x and y parameters.
 // Updates the mCurLocation coordinates.
-void Tetromino::moveLeft() {
-    // TODO: Add edge boundary checks
-    --mCurLocation.x;
-}
-
-// Move the active Tetromino to the right.
-// Updates the mCurLocation coordinates.
-void Tetromino::moveRight() {
-    // TODO: Add edge boundary checks
-    ++mCurLocation.x;
+//
+// PRECONDITION: The caller must be in charge of checking that the
+// move is valid in regards to the rules of Tetris and the position
+// on the grid. This function does not check if a move is valid.
+void Tetromino::move(int x, int y) {
+    mCurLocation.x += x;
+    mCurLocation.y += y;
 }

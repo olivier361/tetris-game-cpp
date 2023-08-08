@@ -80,13 +80,14 @@ class Tetromino : public Graphics::DrawableObject {
     // present in the mTetrominoTypes vector, chosen at random.
     void setRandomTetromino();
 
-    // Move the active Tetromino to the left.
+    // Moves the active Tetromino from its current position
+    // incremented by the provided x and y parameters.
     // Updates the mCurLocation coordinates.
-    void moveLeft();
-
-    // Move the active Tetromino to the right.
-    // Updates the mCurLocation coordinates.
-    void moveRight();
+    //
+    // PRECONDITION: The caller must be in charge of checking that the
+    // move is valid in regards to the rules of Tetris and the position
+    // on the grid. This function does not check if a move is valid.
+    void move(int x, int y);
 
 }; // End of Tetromino class.
 

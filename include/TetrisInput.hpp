@@ -27,10 +27,6 @@ namespace Input {
 
         /// MEMBER FUNCTIONS ///
 
-        // TODO: Delete. These GLUT callback function seemingly cannot be member functions.
-        // The function called by GLUT to process ASCII key presses.
-        //void processNormalKeys(unsigned char key, int x, int y);
-
 
     }; // End of TetrisInput class.
 
