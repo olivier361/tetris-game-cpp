@@ -60,3 +60,17 @@ void Tetromino::setRandomTetromino() {
     std::size_t index = rand() % mTetrominoTypes.size();
     mCurShape = mTetrominoTypes[index];
 }
+
+// Move the active Tetromino to the left.
+// Updates the mCurLocation coordinates.
+void Tetromino::moveLeft() {
+    // TODO: Add edge boundary checks
+    --mCurLocation.x;
+}
+
+// Move the active Tetromino to the right.
+// Updates the mCurLocation coordinates.
+void Tetromino::moveRight() {
+    // TODO: Add edge boundary checks
+    ++mCurLocation.x;
+}

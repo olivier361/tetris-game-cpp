@@ -2,6 +2,7 @@
 #include <string>
 #include "Config.hpp"
 #include "TetrisGraphics.hpp"
+#include "TetrisInput.hpp"
 #include "Playfield.hpp"
 
 // NOTE: This is the entry point for the program.
@@ -14,6 +15,8 @@ int main(int argc, char** argv) {
 
     Playfield* gameMatrix = new Playfield(Config::playfieldOriginX, Config::playfieldOriginY);
 
+    Input::TetrisInput inputManager(gameMatrix);
+    
     // Add objects we want rendered to the sDrawableObjectList.
     // NOTE: Pushing into the front ensure the gameMatrix background is drawn
     // first to avoid overriding the blocks that get rendered on top of it.
