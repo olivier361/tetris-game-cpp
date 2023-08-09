@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+
+# Print an error message and exit.
+failure()
+{
+	echo "ERROR: $@"
+	exit 1
+}
+
+# Get the directory in which the currently running script is located.
+cmd_dir=$(dirname "$0") || failure "cannot determine command directory"
+
+tetris_program="$cmd_dir/tetris"
+
+echo "Starting tetris program..."
+$tetris_program || failure "failed to launch tetris program."
+
+echo "Successfully exited tetris program."
