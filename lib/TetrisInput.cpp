@@ -46,7 +46,10 @@ void processNormalKeys(unsigned char key, int x, int y) {
 
     // TODO: implement.
 
-    if (key == 65 || key == 97) { // A || a
+    if (key == 32) { // SPACEBAR
+        Input::TetrisInput::sPlayfield->hardDrop();
+    }
+    else if (key == 65 || key == 97) { // A || a
         Input::TetrisInput::sPlayfield->moveLeft();
     }
     else if (key == 68 || key == 100) { // D || d

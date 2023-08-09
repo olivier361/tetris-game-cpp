@@ -134,18 +134,19 @@ void Playfield::moveRight() {
     mTetrominoManager.move(1,0);
 }
 
-// Drops the active Tetromino by one cell if no collisions are to occur below.
-// Returns true if the drop is successful and false otherwise.
-bool Playfield::tryDropOne() {
+// Checks if there is a collision at N cells below the active Tetromino.
+// Returns true if there is a collision with a block or the bottom of the matrix
+// and false otherwise.
+bool Playfield::checkBottomCollision(int n) {
     // for all blocks in the active Tetromino.
     for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
-        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + 1; // cell 1 below cur row.
+        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + n; // cell n below cur row.
         int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x; // cur column.
         
 
         // Collision if already touching bottom of grid.
         if (rowIndex >= Config::playfieldBlockHeight) {
-            return false;
+            return true;
         }
 
         // ensure indices are within valid range.
@@ -153,9 +154,21 @@ bool Playfield::tryDropOne() {
             (0 <= colIndex && colIndex < Config::playfieldBlockWidth)) {
             
             if (mMatrix[rowIndex][colIndex] != Config::BlockColor::Empty) {
-                return false;
+                return true; // collision with block detected.
             }
         }
+    }
+
+    return false; // no collision.
+}
+
+// Drops the active Tetromino by one cell if no collisions are to occur below.
+// Returns true if the drop is successful and false otherwise.
+bool Playfield::tryDropOne() {
+    // If there is a collision once cell below,
+    // we cannot perform the drop.
+    if (checkBottomCollision(1)) {
+        return false;
     }
 
     // If no collisions occur for all blocks in the Tetromino,
@@ -164,12 +177,45 @@ bool Playfield::tryDropOne() {
     return true;
 }
 
+// TODO: Remove
+// Drops the active Tetromino down by N grid positions.
+// PRECONDITION: This function assumes that checks have already been
+// made to verify that the new position is a valid position without collisions.
+// void Playfield::dropByN(int n) {
+//     mTetrominoManager.move(0, n);
+// }
+
+// Drops the active Tetromino as far down as possible until either
+// a collision with another block or the bottom of the matrix occurs.
+void Playfield::hardDrop() {
+    mTetrominoManager.move(0, computeMaxDrop()); // perform hard drop
+
+    saveTetrominoToMatrix(); // Save its coordinates to the grid.
+
+    // Award points for landing a Tetromino.
+    mScore += Config::pointsTetrominoLanded;
+
+    // TODO: Add a Line clear check and shift down
+
+    // Prepare the next falling Tetromino.
+    mTetrominoManager.setRandomTetromino();
+    mTetrominoManager.setInitialLocation();
+}
+
 // Based on the location of the active Tetromino, returns the computed
 // max amount of cells the active Tetromino is safely allowed to drop without collisions.
 // This is used to compute the location for a hard drop or a ghost block.
 int Playfield::computeMaxDrop() {
-    // TODO: Implement.
-    return -1;
+    int count = 0;
+
+    // for all matrix rows below the current location.
+    for (int i = mTetrominoManager.mCurLocation.y + 1; i < Config::playfieldBlockHeight; ++i) {
+        if (checkBottomCollision(i - mTetrominoManager.mCurLocation.y)) {
+            return count;
+        }
+        ++count;
+    }
+    return count;
 }
 
 // Based on the given shape and location of the active Tetromino,

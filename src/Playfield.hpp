@@ -52,9 +52,24 @@ class Playfield : public Graphics::DrawableObject {
     // if there are no collisions.
     void moveRight();
 
+    // Checks if there is a collision at N cells below the active Tetromino.
+    // Returns true if there is a collision with a block or the bottom of the matrix
+    // and false otherwise.
+    bool checkBottomCollision(int n);
+
     // Drops the active Tetromino by one cell if no collisions are to occur below.
     // Returns true if the drop is successful and false otherwise.
     bool tryDropOne();
+
+    // TODO: Remove
+    // Drops the active Tetromino down by N grid positions.
+    // PRECONDITION: This function assumes that checks have already been
+    // made to verify that the new position is a valid position without collisions.
+    // void dropByN(int n);
+
+    // Drops the active Tetromino as far down as possible until either
+    // a collision with another block or the bottom of the matrix occurs.
+    void hardDrop();
 
     // Based on the location of the active Tetromino, returns the computed
     // max amount of cells the active Tetromino is safely allowed to drop without collisions.
