@@ -25,8 +25,11 @@ namespace Input {
         TetrisInput(Playfield* playfield);
 
 
-        /// MEMBER FUNCTIONS ///
+        /// STATIC MEMBER FUNCTIONS ///
 
+        // Calls the game timer used to make Tetrominos fall
+        // with the given millisecond parameter.
+        static void callGameTimer(int ms);
 
     }; // End of TetrisInput class.
 

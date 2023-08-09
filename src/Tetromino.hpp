@@ -80,6 +80,10 @@ class Tetromino : public Graphics::DrawableObject {
     // present in the mTetrominoTypes vector, chosen at random.
     void setRandomTetromino();
 
+    // Sets the mCurLocation of the active Tetromino
+    // to the starting position.
+    void setInitialLocation();
+
     // Moves the active Tetromino from its current position
     // incremented by the provided x and y parameters.
     // Updates the mCurLocation coordinates.

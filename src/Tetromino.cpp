@@ -61,6 +61,16 @@ void Tetromino::setRandomTetromino() {
     mCurShape = mTetrominoTypes[index];
 }
 
+// Sets the mCurLocation of the active Tetromino
+// to the starting position.
+void Tetromino::setInitialLocation() {
+    // set initial position to middle of the 2nd row
+    mCurLocation = {Config::playfieldBlockWidth / 2, 1};
+
+    // TODO: Just a test. Revert after.
+    // mCurLocation = {Config::playfieldBlockWidth / 2, -1}; // This works without issue.
+}
+
 // Moves the active Tetromino from its current position
 // incremented by the provided x and y parameters.
 // Updates the mCurLocation coordinates.

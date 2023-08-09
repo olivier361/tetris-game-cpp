@@ -9,6 +9,11 @@ class Playfield : public Graphics::DrawableObject {
 
     /// MEMBER VARIABLES ///
 
+    public:
+
+    bool mIsGameRunning; // True if the game is running (i.e. should make Tetrominos fall and accept player input).
+    bool mIsNextDropScheduled; // True if a timer has already been started. Avoids calling duplicate timers.
+
     private:
 
     // The matrix that keeps track of what blocks are currently on the playing grid.
@@ -47,9 +52,34 @@ class Playfield : public Graphics::DrawableObject {
     // if there are no collisions.
     void moveRight();
 
+    // Drops the active Tetromino by one cell if no collisions are to occur below.
+    // Returns true if the drop is successful and false otherwise.
+    bool tryDropOne();
+
+    // Based on the location of the active Tetromino, returns the computed
+    // max amount of cells the active Tetromino is safely allowed to drop without collisions.
+    // This is used to compute the location for a hard drop or a ghost block.
+    int computeMaxDrop();
+
+    // Based on the given shape and location of the active Tetromino,
+    // Updates the matrix cell values to match the overlaying Tetromino.
+    void saveTetrominoToMatrix();
+
+    // Performs the setup required to initiate a new game
+    // and cleanup states of any previous game.
+    void startGame();
+
+    // Upon being called from a timer, makes the active Tetromino
+    // drop if possible. If not possible, the Tetromino coordinates
+    // are saved to the matrix and a new active Tetromino is spawned.
+    void onDropTimer(int value);
 
     /// HELPER FUNCTIONS ///
 
+    private:
+
+    // Sets all the entries of mMatrix to Config::BlockColor::Empty.
+    void flushMatrix();
 
 }; // End of Playfield class.
 

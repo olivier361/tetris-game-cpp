@@ -20,6 +20,13 @@ namespace Config {
     constexpr int playfieldOriginX = 490;   // X pixel coordinates for the top-left of the playing grid.
     constexpr int playfieldOriginY = 60;    // Y pixel coordinates for the top-left of the playing grid.
 
+    constexpr int initialDropSpeedMS = 1000; // The initial time in milliseconds it takes for a Tetromino to drop when first starting the game.
+    constexpr int decreaseDropSpeedPerLineMS = 20; // The amount of additional time reduced between Tetromino falls based on the amount of lines cleared.
+    constexpr int maxDropSpeedCapMS = 100; // The max speed that can be acheived before the speed is capped and no longer reduced by lines cleared.
+
+    constexpr int pointsTetrominoLanded = 4; // Award 4 points when a Tetromino lands.
+    constexpr int pointsLineCleared = 100; // Award 100 points when a line is cleared.
+
     // An enum class that lists all the available colors for Tetrominos
     // NOTE: the color enums are sometimes used to refer to the type of
     // shape itself since each shape is associated with a distinct color.

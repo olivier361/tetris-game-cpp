@@ -1,17 +1,16 @@
 #include <cstdio>
 #include "Playfield.hpp"
 #include "TetrisGraphics.hpp"
+#include "TetrisInput.hpp"
+
+/// CONSTRUCTORS ///
 
 // Constructor creates a Playfield object which is drawn
 // with the top left corner of the grid at the given pixel coordinates.
 Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
 
     // "zero" initialize the play matrix with empty blocks.
-    for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
-        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
-            mMatrix[i][j] = Config::BlockColor::Empty;
-        }
-    }
+    flushMatrix();
 
     mOffsetX = xPos;
     mOffsetY = yPos;
@@ -20,11 +19,17 @@ Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
     mHighScore = 0;
     mLinesCleared = 0;
 
+    mIsGameRunning = false;
+    mIsNextDropScheduled = false;
+
     Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mTetrominoManager);
 
     // TODO: Just a test. Remove later.
-    mTetrominoManager.setRandomTetromino();
+    // mTetrominoManager.setRandomTetromino();
 }
+
+
+/// MEMBER FUNCTIONS ///
 
 // overload the display function from DrawableObject
 // to define how the Playfield is to be drawn on screen.
@@ -80,7 +85,7 @@ SPACE - Hard drop");
         mOffsetY+(Config::playfieldBlockHeight * Config::blockSizePx),
         lightGray);
 
-    // draw gray background square grid outline. 
+    // Draw gray background square grid outline. 
     for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
         for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
             Graphics::TetrisGraphics::drawSquareOutline(
@@ -92,11 +97,29 @@ SPACE - Hard drop");
                 gray);
         }
     }
+
+    // For each cell in the matrix, draw Tetromino blocks that are saved in the matrix
+    for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
+        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
+
+            if (mMatrix[i][j] != Config::BlockColor::Empty) {
+                // Draw block at current matrix position
+                // if a block is placed there.
+                Graphics::TetrisGraphics::drawBlock(
+                    mOffsetX + (j * Config::blockSizePx),
+                    mOffsetY + (i * Config::blockSizePx),
+                    mMatrix[i][j]);
+            }
+        }
+    }
+
 }
 
 // Move the active Tetromino to the left
 // if there are no collisions.
 void Playfield::moveLeft() {
+    if (!mIsGameRunning) {return;}
+
     // TODO: Add collision checks.
     mTetrominoManager.move(-1,0);
 }
@@ -104,6 +127,133 @@ void Playfield::moveLeft() {
 // Move the active Tetromino to the right
 // if there are no collisions.
 void Playfield::moveRight() {
+    if (!mIsGameRunning) {return;}
+
     // TODO: Add collision checks.
+
     mTetrominoManager.move(1,0);
+}
+
+// Drops the active Tetromino by one cell if no collisions are to occur below.
+// Returns true if the drop is successful and false otherwise.
+bool Playfield::tryDropOne() {
+    // for all blocks in the active Tetromino.
+    for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
+        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + 1; // cell 1 below cur row.
+        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x; // cur column.
+        
+
+        // Collision if already touching bottom of grid.
+        if (rowIndex >= Config::playfieldBlockHeight) {
+            return false;
+        }
+
+        // ensure indices are within valid range.
+        if ((0 <= rowIndex && rowIndex < Config::playfieldBlockHeight) &&
+            (0 <= colIndex && colIndex < Config::playfieldBlockWidth)) {
+            
+            if (mMatrix[rowIndex][colIndex] != Config::BlockColor::Empty) {
+                return false;
+            }
+        }
+    }
+
+    // If no collisions occur for all blocks in the Tetromino,
+    // drop the Tetromino by one.
+    mTetrominoManager.move(0,1);
+    return true;
+}
+
+// Based on the location of the active Tetromino, returns the computed
+// max amount of cells the active Tetromino is safely allowed to drop without collisions.
+// This is used to compute the location for a hard drop or a ghost block.
+int Playfield::computeMaxDrop() {
+    // TODO: Implement.
+    return -1;
+}
+
+// Based on the given shape and location of the active Tetromino,
+// Updates the matrix cell values to match the overlaying Tetromino.
+void Playfield::saveTetrominoToMatrix() {
+    // for all blocks in the active Tetromino.
+    for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
+        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y;
+        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x;
+        
+        // ensure indices are within valid range.
+        if ((0 <= rowIndex && rowIndex < Config::playfieldBlockHeight) &&
+            (0 <= colIndex && colIndex < Config::playfieldBlockWidth)) {
+            
+            // Update color at current matrix location.
+            mMatrix[rowIndex][colIndex] = mTetrominoManager.mCurShape.color;
+        }
+    }
+}
+
+// Performs the setup required to initiate a new game
+// and cleanup states of any previous game.
+void Playfield::startGame() {
+    mScore = 0;
+    mLinesCleared = 0;
+
+    flushMatrix();
+
+    // Prepare the first falling Tetromino.
+    mTetrominoManager.setRandomTetromino();
+    mTetrominoManager.setInitialLocation();
+    
+    mIsGameRunning = true;
+
+    // Initiate game timer so Tetromino's start to fall.
+    Input::TetrisInput::callGameTimer(Config::initialDropSpeedMS);
+}
+
+// Upon being called from a timer, makes the active Tetromino
+// drop if possible. If not possible, the Tetromino coordinates
+// are saved to the matrix and a new active Tetromino is spawned.
+void Playfield::onDropTimer(int value) {
+    mIsNextDropScheduled = false;
+
+    if (!mIsGameRunning) {return;}
+
+    if(!tryDropOne()) {
+        // if drop failed. Tetromino has "landed".
+        // Save its coordinates to the grid and set a new active Tetromino.
+        saveTetrominoToMatrix();
+
+        // Award points for landing a Tetromino.
+        mScore += Config::pointsTetrominoLanded;
+
+        // Prepare the next falling Tetromino.
+        mTetrominoManager.setRandomTetromino();
+        mTetrominoManager.setInitialLocation();
+    }
+
+    // TODO: Check for line clears and if game over
+    // These functions should change the game running state if game over.
+
+    // Call Tetromino fall timer again if game is still running
+    if (mIsGameRunning) {
+        // Increase the drop speed based on the amount of lines the player has cleared.
+        int dropSpeed = Config::initialDropSpeedMS - (Config::decreaseDropSpeedPerLineMS * mLinesCleared);
+        
+        if (dropSpeed < Config::maxDropSpeedCapMS) {
+            dropSpeed = Config::maxDropSpeedCapMS;
+        }
+        
+        Input::TetrisInput::callGameTimer(dropSpeed);
+    }
+}
+
+
+/// HELPER FUNCTIONS ///
+
+// Sets all the entries of mMatrix to Config::BlockColor::Empty.
+void Playfield::flushMatrix() {
+    // "zero" initialize the play matrix with empty blocks.
+    for (int i = 0; i < Config::playfieldBlockHeight; ++i) {
+        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
+            mMatrix[i][j] = Config::BlockColor::Empty;
+        }
+    }
 }
