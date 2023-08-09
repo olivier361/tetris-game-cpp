@@ -11,8 +11,9 @@ class Playfield : public Graphics::DrawableObject {
 
     public:
 
-    bool mIsGameRunning; // True if the game is running (i.e. should make Tetrominos fall and accept player input).
-    bool mIsNextDropScheduled; // True if a timer has already been started. Avoids calling duplicate timers.
+    bool mIsGameRunning;        // True if the game is running (i.e. should make Tetrominos fall and accept player input).
+    bool mIsGameOver;           // True if the player has not started a game or has ended. Used to determine if the player can pause/unpause.
+    bool mIsNextDropScheduled;  // True if a timer has already been started. Avoids calling duplicate timers.
 
     private:
 
@@ -44,6 +45,10 @@ class Playfield : public Graphics::DrawableObject {
     // to define how the Playfield is to be drawn on screen.
     void display();
 
+    // Pauses/Unpauses the game if it is not in a game over state.
+    // Returns the status of mIsGameRunning after performing the toggle.
+    bool pauseToggle();
+
     // Move the active Tetromino to the left
     // if there are no collisions.
     void moveLeft();
@@ -51,6 +56,10 @@ class Playfield : public Graphics::DrawableObject {
     // Move the active Tetromino to the right
     // if there are no collisions.
     void moveRight();
+
+    // Drops the active Tetromino as far down as possible until either
+    // a collision with another block or the bottom of the matrix occurs.
+    void hardDrop();
 
     // Checks if there is a collision at N cells below the active Tetromino.
     // Returns true if there is a collision with a block or the bottom of the matrix
@@ -60,16 +69,6 @@ class Playfield : public Graphics::DrawableObject {
     // Drops the active Tetromino by one cell if no collisions are to occur below.
     // Returns true if the drop is successful and false otherwise.
     bool tryDropOne();
-
-    // TODO: Remove
-    // Drops the active Tetromino down by N grid positions.
-    // PRECONDITION: This function assumes that checks have already been
-    // made to verify that the new position is a valid position without collisions.
-    // void dropByN(int n);
-
-    // Drops the active Tetromino as far down as possible until either
-    // a collision with another block or the bottom of the matrix occurs.
-    void hardDrop();
 
     // Based on the location of the active Tetromino, returns the computed
     // max amount of cells the active Tetromino is safely allowed to drop without collisions.

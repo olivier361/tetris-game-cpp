@@ -58,4 +58,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
     else if (key == 78 || key == 110) { // N || n
         Input::TetrisInput::sPlayfield->startGame();
     }
+    else if (key == 80 || key == 112) { // P || p
+        Input::TetrisInput::sPlayfield->pauseToggle();
+    }
 }

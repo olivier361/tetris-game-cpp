@@ -20,6 +20,7 @@ Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
     mLinesCleared = 0;
 
     mIsGameRunning = false;
+    mIsGameOver = true;
     mIsNextDropScheduled = false;
 
     Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mTetrominoManager);
@@ -46,6 +47,7 @@ void Playfield::display() {
     Graphics::TetrisGraphics::drawText(110, 260, white, "CONTROLS:");
     Graphics::TetrisGraphics::drawText(110, 300, white,
 "N - Start new game\n\
+P - Pause game\n\
 ESC - Exit game\n\
 \n\
 W - Rotate clockwise\n\
@@ -113,6 +115,43 @@ SPACE - Hard drop");
         }
     }
 
+    // Draw a pause message on top of the matrix if the game is paused.
+    if (!mIsGameRunning && !mIsGameOver) {
+        const int boxHalfWidth = 105;
+        const int boxHalfHeight = 45;
+        const int borderWidth = 4;
+        const double red[4] = {1.0, 0.0, 0.0, 1.0}; // #FF0000 Red
+        const double black[4] = {0.0, 0.0, 0.0, 1.0}; // #000000 Black
+
+        Graphics::TetrisGraphics::drawSquare(
+            (Config::windowSizeX / 2) - boxHalfWidth,
+            (Config::windowSizeY / 2) - boxHalfHeight,
+            (Config::windowSizeX / 2) + boxHalfWidth,
+            (Config::windowSizeY / 2) + boxHalfHeight,
+            red);
+
+        Graphics::TetrisGraphics::drawSquare(
+            (Config::windowSizeX / 2) - boxHalfWidth + borderWidth,
+            (Config::windowSizeY / 2) - boxHalfHeight + borderWidth,
+            (Config::windowSizeX / 2) + boxHalfWidth - borderWidth,
+            (Config::windowSizeY / 2) + boxHalfHeight - borderWidth,
+            black);
+
+        Graphics::TetrisGraphics::drawText(
+            (Config::windowSizeX / 2) - boxHalfWidth + 25,
+            (Config::windowSizeY / 2) - 5,
+            red,
+            "   GAME PAUSED\nPress 'P' to resume.");
+    }
+}
+
+// Pauses/Unpauses the game if it is not in a game over state.
+// Returns the status of mIsGameRunning after performing the toggle.
+bool Playfield::pauseToggle() {
+    if (!mIsGameOver) {
+        mIsGameRunning = !mIsGameRunning;
+    }
+    return mIsGameRunning;
 }
 
 // Move the active Tetromino to the left
@@ -132,6 +171,25 @@ void Playfield::moveRight() {
     // TODO: Add collision checks.
 
     mTetrominoManager.move(1,0);
+}
+
+// Drops the active Tetromino as far down as possible until either
+// a collision with another block or the bottom of the matrix occurs.
+void Playfield::hardDrop() {
+    if (!mIsGameRunning) {return;}
+
+    mTetrominoManager.move(0, computeMaxDrop()); // perform hard drop
+
+    saveTetrominoToMatrix(); // Save its coordinates to the grid.
+
+    // Award points for landing a Tetromino.
+    mScore += Config::pointsTetrominoLanded;
+
+    // TODO: Add a Line clear check and shift down
+
+    // Prepare the next falling Tetromino.
+    mTetrominoManager.setRandomTetromino();
+    mTetrominoManager.setInitialLocation();
 }
 
 // Checks if there is a collision at N cells below the active Tetromino.
@@ -175,31 +233,6 @@ bool Playfield::tryDropOne() {
     // drop the Tetromino by one.
     mTetrominoManager.move(0,1);
     return true;
-}
-
-// TODO: Remove
-// Drops the active Tetromino down by N grid positions.
-// PRECONDITION: This function assumes that checks have already been
-// made to verify that the new position is a valid position without collisions.
-// void Playfield::dropByN(int n) {
-//     mTetrominoManager.move(0, n);
-// }
-
-// Drops the active Tetromino as far down as possible until either
-// a collision with another block or the bottom of the matrix occurs.
-void Playfield::hardDrop() {
-    mTetrominoManager.move(0, computeMaxDrop()); // perform hard drop
-
-    saveTetrominoToMatrix(); // Save its coordinates to the grid.
-
-    // Award points for landing a Tetromino.
-    mScore += Config::pointsTetrominoLanded;
-
-    // TODO: Add a Line clear check and shift down
-
-    // Prepare the next falling Tetromino.
-    mTetrominoManager.setRandomTetromino();
-    mTetrominoManager.setInitialLocation();
 }
 
 // Based on the location of the active Tetromino, returns the computed
@@ -248,6 +281,7 @@ void Playfield::startGame() {
     mTetrominoManager.setRandomTetromino();
     mTetrominoManager.setInitialLocation();
     
+    mIsGameOver = false;
     mIsGameRunning = true;
 
     // Initiate game timer so Tetromino's start to fall.
@@ -260,26 +294,28 @@ void Playfield::startGame() {
 void Playfield::onDropTimer(int value) {
     mIsNextDropScheduled = false;
 
-    if (!mIsGameRunning) {return;}
+    if (mIsGameRunning) {
 
-    if(!tryDropOne()) {
-        // if drop failed. Tetromino has "landed".
-        // Save its coordinates to the grid and set a new active Tetromino.
-        saveTetrominoToMatrix();
+        if(!tryDropOne()) {
+            // if drop failed. Tetromino has "landed".
+            // Save its coordinates to the grid and set a new active Tetromino.
+            saveTetrominoToMatrix();
 
-        // Award points for landing a Tetromino.
-        mScore += Config::pointsTetrominoLanded;
+            // Award points for landing a Tetromino.
+            mScore += Config::pointsTetrominoLanded;
 
-        // Prepare the next falling Tetromino.
-        mTetrominoManager.setRandomTetromino();
-        mTetrominoManager.setInitialLocation();
+            // Prepare the next falling Tetromino.
+            mTetrominoManager.setRandomTetromino();
+            mTetrominoManager.setInitialLocation();
+        }
+
+        // TODO: Check for line clears and if game over
+        // These functions should change the game running state if game over.
+
     }
 
-    // TODO: Check for line clears and if game over
-    // These functions should change the game running state if game over.
-
     // Call Tetromino fall timer again if game is still running
-    if (mIsGameRunning) {
+    if (!mIsGameOver) {
         // Increase the drop speed based on the amount of lines the player has cleared.
         int dropSpeed = Config::initialDropSpeedMS - (Config::decreaseDropSpeedPerLineMS * mLinesCleared);
         
