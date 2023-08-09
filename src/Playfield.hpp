@@ -4,6 +4,7 @@
 #include "Config.hpp"
 #include "DrawableObject.hpp"
 #include "Tetromino.hpp"
+#include "OverlayManager.hpp"
 
 class Playfield : public Graphics::DrawableObject {
 
@@ -11,6 +12,7 @@ class Playfield : public Graphics::DrawableObject {
 
     public:
 
+    bool mIsFirstStart;         // True if a game has never been played since program launched. (Don't display game over on first start).
     bool mIsGameRunning;        // True if the game is running (i.e. should make Tetrominos fall and accept player input).
     bool mIsGameOver;           // True if the player has not started a game or has ended. Used to determine if the player can pause/unpause.
     bool mIsNextDropScheduled;  // True if a timer has already been started. Avoids calling duplicate timers.
@@ -20,7 +22,8 @@ class Playfield : public Graphics::DrawableObject {
     // The matrix that keeps track of what blocks are currently on the playing grid.
     Config::BlockColor mMatrix[Config::playfieldBlockHeight][Config::playfieldBlockWidth];
 
-    Tetromino mTetrominoManager; // The Tetromino object associated with this Playfield instance.
+    Tetromino mTetrominoManager;    // The Tetromino object associated with this Playfield instance.
+    OverlayManager mOverlayManager; // The OverlayManager object associated with this Playfield instance. 
 
     int mOffsetX; // The X pixel coordinate offset for the top-right corner of the playfield object.
     int mOffsetY; // The Y pixel coordinate offset for the top-right corner of the playfield object.

@@ -41,6 +41,7 @@ add_executable(tetris
     lib/TetrisGraphics.cpp
     lib/TetrisInput.cpp
     src/Tetromino.cpp
+    src/OverlayManager.cpp
     src/Playfield.cpp
     src/Tetris.cpp
 )

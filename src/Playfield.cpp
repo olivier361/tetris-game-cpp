@@ -7,7 +7,7 @@
 
 // Constructor creates a Playfield object which is drawn
 // with the top left corner of the grid at the given pixel coordinates.
-Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
+Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos), mOverlayManager() {
 
     // "zero" initialize the play matrix with empty blocks.
     flushMatrix();
@@ -19,14 +19,14 @@ Playfield::Playfield(int xPos, int yPos) : mTetrominoManager(xPos, yPos) {
     mHighScore = 0;
     mLinesCleared = 0;
 
+    mIsFirstStart = true;
     mIsGameRunning = false;
     mIsGameOver = true;
     mIsNextDropScheduled = false;
 
+    // The push_back order determines what is drawn first (i.e. depth)
     Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mTetrominoManager);
-
-    // TODO: Just a test. Remove later.
-    // mTetrominoManager.setRandomTetromino();
+    Graphics::TetrisGraphics::sDrawableObjectList.push_back(&mOverlayManager);
 }
 
 
@@ -115,34 +115,6 @@ SPACE - Hard drop");
         }
     }
 
-    // Draw a pause message on top of the matrix if the game is paused.
-    if (!mIsGameRunning && !mIsGameOver) {
-        const int boxHalfWidth = 105;
-        const int boxHalfHeight = 45;
-        const int borderWidth = 4;
-        const double red[4] = {1.0, 0.0, 0.0, 1.0}; // #FF0000 Red
-        const double black[4] = {0.0, 0.0, 0.0, 1.0}; // #000000 Black
-
-        Graphics::TetrisGraphics::drawSquare(
-            (Config::windowSizeX / 2) - boxHalfWidth,
-            (Config::windowSizeY / 2) - boxHalfHeight,
-            (Config::windowSizeX / 2) + boxHalfWidth,
-            (Config::windowSizeY / 2) + boxHalfHeight,
-            red);
-
-        Graphics::TetrisGraphics::drawSquare(
-            (Config::windowSizeX / 2) - boxHalfWidth + borderWidth,
-            (Config::windowSizeY / 2) - boxHalfHeight + borderWidth,
-            (Config::windowSizeX / 2) + boxHalfWidth - borderWidth,
-            (Config::windowSizeY / 2) + boxHalfHeight - borderWidth,
-            black);
-
-        Graphics::TetrisGraphics::drawText(
-            (Config::windowSizeX / 2) - boxHalfWidth + 25,
-            (Config::windowSizeY / 2) - 5,
-            red,
-            "   GAME PAUSED\nPress 'P' to resume.");
-    }
 }
 
 // Pauses/Unpauses the game if it is not in a game over state.
@@ -150,6 +122,7 @@ SPACE - Hard drop");
 bool Playfield::pauseToggle() {
     if (!mIsGameOver) {
         mIsGameRunning = !mIsGameRunning;
+        mOverlayManager.mSetPauseOverlay = !mIsGameRunning;
     }
     return mIsGameRunning;
 }
@@ -283,6 +256,10 @@ void Playfield::startGame() {
     
     mIsGameOver = false;
     mIsGameRunning = true;
+    mIsFirstStart = false;
+
+    mOverlayManager.mSetPauseOverlay = false;
+    mOverlayManager.mSetGameOverOverlay = false;
 
     // Initiate game timer so Tetromino's start to fall.
     Input::TetrisInput::callGameTimer(Config::initialDropSpeedMS);
