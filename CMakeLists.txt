@@ -54,4 +54,11 @@ target_link_libraries(tetris PRIVATE ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
 # Print the current compile flags.
 message("New compile flags: \"${CMAKE_CXX_FLAGS}\"")
 
-# TODO: Add install support, not just building the executable.
+
+### INSTALL PROGRAM TO INSTALL_DIR ###
+
+# Install the tetris program.
+install(TARGETS tetris DESTINATION bin)
+
+# Install the demo script.
+install(PROGRAMS demo DESTINATION bin)

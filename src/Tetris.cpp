@@ -8,7 +8,9 @@
 // NOTE: This is the entry point for the program.
 
 int main(int argc, char** argv) {
-    std::cout << "Launching game...\n";
+    std::cout << "Welcome to Tetris!\n";
+    std::cout << "Please press the 'N' key to start a game.\n";
+    std::cout << "More details about the controls can be seen in the graphical window.\n";
 
     glutInit(&argc, argv);
     Graphics::TetrisGraphics window(Config::windowSizeX, Config::windowSizeY, Config::appName);
@@ -16,7 +18,7 @@ int main(int argc, char** argv) {
     Playfield* gameMatrix = new Playfield(Config::playfieldOriginX, Config::playfieldOriginY);
 
     Input::TetrisInput inputManager(gameMatrix);
-    
+
     // Add objects we want rendered to the sDrawableObjectList.
     // NOTE: Pushing into the front ensure the gameMatrix background is drawn
     // first to avoid overriding the blocks that get rendered on top of it.
