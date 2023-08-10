@@ -132,8 +132,9 @@ bool Playfield::pauseToggle() {
 void Playfield::moveLeft() {
     if (!mIsGameRunning) {return;}
 
-    // TODO: Add collision checks.
-    mTetrominoManager.move(-1,0);
+    if (!checkSideCollision(-1)) {
+        mTetrominoManager.move(-1,0);
+    }
 }
 
 // Move the active Tetromino to the right
@@ -141,9 +142,9 @@ void Playfield::moveLeft() {
 void Playfield::moveRight() {
     if (!mIsGameRunning) {return;}
 
-    // TODO: Add collision checks.
-
-    mTetrominoManager.move(1,0);
+    if (!checkSideCollision(1)) {
+        mTetrominoManager.move(1,0);
+    }
 }
 
 // Drops the active Tetromino as far down as possible until either
@@ -165,6 +166,34 @@ void Playfield::hardDrop() {
     mTetrominoManager.setInitialLocation();
 }
 
+// Checks if there is a collision at an N cells offset on the x axis on the side of the active Tetromino.
+// Returns true if there is a collision with a block or the side border of the matrix and false otherwise.
+// Ex: n = 1: checks for collision one to the right.
+//     n = -1: checks for collision one to the left.
+bool Playfield::checkSideCollision(int n) {
+    // for all blocks in the active Tetromino.
+    for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
+        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y; // cur row.
+        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x + n; // cell n besides cur column.
+        
+        // Collision if already touching either side of grid.
+        if (colIndex < 0 || colIndex >= Config::playfieldBlockWidth) {
+            return true;
+        }
+
+        // ensure indices are within valid range.
+        if ((0 <= rowIndex && rowIndex < Config::playfieldBlockHeight) &&
+            (0 <= colIndex && colIndex < Config::playfieldBlockWidth)) {
+            
+            if (mMatrix[rowIndex][colIndex] != Config::BlockColor::Empty) {
+                return true; // collision with block detected.
+            }
+        }
+    }
+
+    return false; // no collision.
+}
+
 // Checks if there is a collision at N cells below the active Tetromino.
 // Returns true if there is a collision with a block or the bottom of the matrix
 // and false otherwise.
@@ -174,7 +203,6 @@ bool Playfield::checkBottomCollision(int n) {
         int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + n; // cell n below cur row.
         int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x; // cur column.
         
-
         // Collision if already touching bottom of grid.
         if (rowIndex >= Config::playfieldBlockHeight) {
             return true;

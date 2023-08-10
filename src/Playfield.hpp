@@ -64,6 +64,12 @@ class Playfield : public Graphics::DrawableObject {
     // a collision with another block or the bottom of the matrix occurs.
     void hardDrop();
 
+    // Checks if there is a collision at an N cells offset on the x axis on the side of the active Tetromino.
+    // Returns true if there is a collision with a block or the side border of the matrix and false otherwise.
+    // Ex: n = 1: checks for collision one to the right.
+    //     n = -1: checks for collision one to the left.
+    bool checkSideCollision(int n);
+    
     // Checks if there is a collision at N cells below the active Tetromino.
     // Returns true if there is a collision with a block or the bottom of the matrix
     // and false otherwise.
