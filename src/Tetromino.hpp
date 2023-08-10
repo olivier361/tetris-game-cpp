@@ -46,11 +46,11 @@ class Tetromino : public Graphics::DrawableObject {
     const std::vector<Shape> mTetrominoTypes = {
         {Config::BlockColor::Red, {{0,0}, {0,1}, {1,1}, {-1,0}}},       // Z
         {Config::BlockColor::Green, {{0,0}, {0,1}, {-1,1}, {1,0}}},     // S
-        {Config::BlockColor::Blue, {{0,0}, {0,1}, {0,-1}, {-1,1}}},     // J
-        {Config::BlockColor::Orange, {{0,0}, {0,1}, {0,-1}, {1,1}}},    // L
-        {Config::BlockColor::Purple, {{0,0}, {0,1}, {1,0}, {-1,0}}},    // T
+        {Config::BlockColor::Blue, {{0,0}, {1,0}, {-1,0}, {-1,-1}}},     // J
+        {Config::BlockColor::Orange, {{0,0}, {1,0}, {-1,0}, {1,-1}}},    // L
+        {Config::BlockColor::Purple, {{0,0}, {0,-1}, {1,0}, {-1,0}}},    // T
         {Config::BlockColor::Yellow, {{0,0}, {0,1}, {1,0}, {1,1}}},     // O
-        {Config::BlockColor::Cyan, {{0,0}, {0,-1}, {0,1}, {0,2}}},      // I
+        {Config::BlockColor::Cyan, {{0,0}, {1,0}, {-1,0}, {-2,0}}},      // I
     };
 
     /// CONSTRUCTORS ///

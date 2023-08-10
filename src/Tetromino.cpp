@@ -14,7 +14,7 @@ Tetromino::Tetromino(double playfieldOrigX, double playfieldOrigY) :
     mPlayfieldOriginX(playfieldOrigX), mPlayfieldOriginY(playfieldOrigY) {
     // setupTetrominoTypesVector();
 
-    mCurLocation = {Config::playfieldBlockWidth / 2, 1}; // set initial position to middle of the 2nd row
+    mCurLocation = {Config::playfieldBlockWidth / 2, 0}; // set initial position to middle of the 2nd row
     mCurShape = {Config::BlockColor::Empty, {}}; // initialize with empty shape.
 
     // Ensures the sequence of random numbers is different every time
@@ -65,10 +65,7 @@ void Tetromino::setRandomTetromino() {
 // to the starting position.
 void Tetromino::setInitialLocation() {
     // set initial position to middle of the 2nd row
-    mCurLocation = {Config::playfieldBlockWidth / 2, 1};
-
-    // TODO: Just a test. Revert after.
-    // mCurLocation = {Config::playfieldBlockWidth / 2, -1}; // This works without issue.
+    mCurLocation = {Config::playfieldBlockWidth / 2, 0};
 }
 
 // Moves the active Tetromino from its current position
