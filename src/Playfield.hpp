@@ -109,6 +109,12 @@ class Playfield : public Graphics::DrawableObject {
 
     private:
 
+    // This function increments the mScore variable while also updating
+    // mHighScore if the score is greater than the current high score.
+    // NOTE: mScore should never be incremented directly. It should always
+    // use this function to ensure the high score remains accurate.
+    void incrementScoreAndHighScore(int amount);
+
     // Sets all the entries of mMatrix to Config::BlockColor::Empty.
     void flushMatrix();
 

@@ -157,7 +157,7 @@ void Playfield::hardDrop() {
     saveTetrominoToMatrix(); // Save its coordinates to the grid.
 
     // Award points for landing a Tetromino.
-    mScore += Config::pointsTetrominoLanded;
+    incrementScoreAndHighScore(Config::pointsTetrominoLanded);
 
     clearFullLines();
     
@@ -287,7 +287,7 @@ void Playfield::clearFullLines() {
         // if line full, award points, clear, and shift down
         if (isLineFull(i)) {
             // Award points
-            mScore += Config::pointsLineCleared;
+            incrementScoreAndHighScore(Config::pointsLineCleared);
             ++mLinesCleared;
 
             // shift lines down (clears by overriding).
@@ -348,7 +348,7 @@ void Playfield::onDropTimer(int value) {
             saveTetrominoToMatrix();
 
             // Award points for landing a Tetromino.
-            mScore += Config::pointsTetrominoLanded;
+            incrementScoreAndHighScore(Config::pointsTetrominoLanded);
 
             // Prepare the next falling Tetromino.
             mTetrominoManager.setRandomTetromino();
@@ -379,6 +379,17 @@ void Playfield::onDropTimer(int value) {
 
 
 /// HELPER FUNCTIONS ///
+
+// This function increments the mScore variable while also updating
+// mHighScore if the score is greater than the current high score.
+// NOTE: mScore should never be incremented directly. It should always
+// use this function to ensure the high score remains accurate.
+void Playfield::incrementScoreAndHighScore(int amount) {
+    mScore += amount;
+    if (mScore > mHighScore) {
+        mHighScore = mScore;
+    }
+}
 
 // Sets all the entries of mMatrix to Config::BlockColor::Empty.
 void Playfield::flushMatrix() {
