@@ -159,7 +159,10 @@ void Playfield::hardDrop() {
     // Award points for landing a Tetromino.
     mScore += Config::pointsTetrominoLanded;
 
-    // TODO: Add a Line clear check and shift down
+    clearFullLines();
+    
+    // TODO: Add  game over check
+
 
     // Prepare the next falling Tetromino.
     mTetrominoManager.setRandomTetromino();
@@ -270,6 +273,41 @@ void Playfield::saveTetrominoToMatrix() {
     }
 }
 
+// Checks the Matrix for any full rows. If full rows are found, the row is emptied
+// and all lines above are shifted down. Points are also awarded for cleared lines.
+void Playfield::clearFullLines() {
+    // for each line (bottom to top)
+    for (int i = Config::playfieldBlockHeight - 1; i >= 0; --i) {
+        
+        // TODO: Refactor
+
+        int fillCount = 0;
+
+        // check current line to see if full
+        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
+            if (mMatrix[i][j] == Config::BlockColor::Empty) {
+                break; // line not full
+            }
+            ++fillCount;
+        }
+
+        // if line full, award points, clear, and shift down
+        if (fillCount == Config::playfieldBlockWidth) {
+
+            // Award points
+            mScore += Config::pointsLineCleared;
+            ++mLinesCleared;
+
+            // shift lines down (clears by overriding).
+            shiftLinesDown(i);
+
+            // Increment i so that we can check what used to be the next line
+            // but is now in the same location as the one we just cleared.
+            ++i;
+        }
+    }
+}
+
 // Performs the setup required to initiate a new game
 // and cleanup states of any previous game.
 void Playfield::startGame() {
@@ -314,9 +352,10 @@ void Playfield::onDropTimer(int value) {
             mTetrominoManager.setInitialLocation();
         }
 
-        // TODO: Check for line clears and if game over
-        // These functions should change the game running state if game over.
+        clearFullLines();
 
+        // TODO: if game over
+        // These functions should change the game running state if game over.
     }
 
     // Call Tetromino fall timer again if game is still running
@@ -342,5 +381,21 @@ void Playfield::flushMatrix() {
         for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
             mMatrix[i][j] = Config::BlockColor::Empty;
         }
+    }
+}
+
+// Clears the line at the given row index in the mMatrix
+// and shift all lines above it down by one row.
+void Playfield::shiftLinesDown(int rowIndex) {
+    // shift down existing rows
+    for (int i = rowIndex; i > 0; --i) {
+        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
+            mMatrix[i][j] = mMatrix[i - 1][j];
+        }
+    }
+
+    // add a new empty top row
+    for (int k = 0; k < Config::playfieldBlockWidth; ++k) {
+        mMatrix[0][k] = Config::BlockColor::Empty;
     }
 }

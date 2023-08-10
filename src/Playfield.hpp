@@ -88,6 +88,10 @@ class Playfield : public Graphics::DrawableObject {
     // Updates the matrix cell values to match the overlaying Tetromino.
     void saveTetrominoToMatrix();
 
+    // Checks the Matrix for any full rows. If full rows are found, the row is emptied
+    // and all lines above are shifted down. Points are also awarded for cleared lines.
+    void clearFullLines();
+
     // Performs the setup required to initiate a new game
     // and cleanup states of any previous game.
     void startGame();
@@ -103,6 +107,10 @@ class Playfield : public Graphics::DrawableObject {
 
     // Sets all the entries of mMatrix to Config::BlockColor::Empty.
     void flushMatrix();
+
+    // Clears the line at the given row index in the mMatrix
+    // and shift all lines above it down by one row.
+    void shiftLinesDown(int rowIndex);
 
 }; // End of Playfield class.
 
