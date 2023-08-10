@@ -96,6 +96,10 @@ class Playfield : public Graphics::DrawableObject {
     // and cleanup states of any previous game.
     void startGame();
 
+    // Checks to see if the top row of the mMatrix contains a block.
+    // If so returns true that the game is over.
+    bool isGameOver();
+
     // Upon being called from a timer, makes the active Tetromino
     // drop if possible. If not possible, the Tetromino coordinates
     // are saved to the matrix and a new active Tetromino is spawned.

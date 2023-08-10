@@ -62,5 +62,5 @@ void OverlayManager::drawPauseOverlay() {
 
 // Draws a Game Over message overlay in the middle of the screen.
 void OverlayManager::drawGameOverOverlay() {
-    drawOverlay(15, "    GAME OVER\nPress 'N' to play again.");
+    drawOverlay(15, "       GAME OVER\nPress 'N' to play again.");
 }

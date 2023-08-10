@@ -161,12 +161,17 @@ void Playfield::hardDrop() {
 
     clearFullLines();
     
-    // TODO: Add  game over check
+    if (isGameOver()) {
+        mIsGameRunning = false;
+        mIsGameOver = true;
+        mOverlayManager.mSetGameOverOverlay = true;
+    }
 
-
-    // Prepare the next falling Tetromino.
-    mTetrominoManager.setRandomTetromino();
-    mTetrominoManager.setInitialLocation();
+    if (!mIsGameOver) {
+        // Prepare the next falling Tetromino.
+        mTetrominoManager.setRandomTetromino();
+        mTetrominoManager.setInitialLocation();
+    }
 }
 
 // Checks if there is a collision at an N cells offset on the x axis on the side of the active Tetromino.
@@ -318,6 +323,17 @@ void Playfield::startGame() {
     Input::TetrisInput::callGameTimer(Config::initialDropSpeedMS);
 }
 
+// Checks to see if the top row of the mMatrix contains a block.
+// If so returns true that the game is over.
+bool Playfield::isGameOver() {
+    for (int i = 0; i < Config::playfieldBlockWidth; ++i) {
+        if (mMatrix[0][i] != Config::BlockColor::Empty) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Upon being called from a timer, makes the active Tetromino
 // drop if possible. If not possible, the Tetromino coordinates
 // are saved to the matrix and a new active Tetromino is spawned.
@@ -341,8 +357,11 @@ void Playfield::onDropTimer(int value) {
 
         clearFullLines();
 
-        // TODO: if game over
-        // These functions should change the game running state if game over.
+        if (isGameOver()) {
+            mIsGameRunning = false;
+            mIsGameOver = true;
+            mOverlayManager.mSetGameOverOverlay = true;
+        }
     }
 
     // Call Tetromino fall timer again if game is still running
