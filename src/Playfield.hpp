@@ -108,6 +108,9 @@ class Playfield : public Graphics::DrawableObject {
     // Sets all the entries of mMatrix to Config::BlockColor::Empty.
     void flushMatrix();
 
+    // Returns true if the line at rowIndex in the mMatrix is filled with blocks.
+    bool isLineFull(int rowIndex);
+
     // Clears the line at the given row index in the mMatrix
     // and shift all lines above it down by one row.
     void shiftLinesDown(int rowIndex);

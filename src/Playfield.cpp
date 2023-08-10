@@ -279,21 +279,8 @@ void Playfield::clearFullLines() {
     // for each line (bottom to top)
     for (int i = Config::playfieldBlockHeight - 1; i >= 0; --i) {
         
-        // TODO: Refactor
-
-        int fillCount = 0;
-
-        // check current line to see if full
-        for (int j = 0; j < Config::playfieldBlockWidth; ++j) {
-            if (mMatrix[i][j] == Config::BlockColor::Empty) {
-                break; // line not full
-            }
-            ++fillCount;
-        }
-
         // if line full, award points, clear, and shift down
-        if (fillCount == Config::playfieldBlockWidth) {
-
+        if (isLineFull(i)) {
             // Award points
             mScore += Config::pointsLineCleared;
             ++mLinesCleared;
@@ -382,6 +369,25 @@ void Playfield::flushMatrix() {
             mMatrix[i][j] = Config::BlockColor::Empty;
         }
     }
+}
+
+// Returns true if the line at rowIndex in the mMatrix is filled with blocks.
+bool Playfield::isLineFull(int rowIndex) {
+    int fillCount = 0;
+
+    // check current line to see if full
+    for (int i = 0; i < Config::playfieldBlockWidth; ++i) {
+        if (mMatrix[rowIndex][i] == Config::BlockColor::Empty) {
+            break; // line not full
+        }
+        ++fillCount;
+    }
+
+    // if line full, return true.
+    if (fillCount == Config::playfieldBlockWidth) {
+        return true;
+    }
+    return false;
 }
 
 // Clears the line at the given row index in the mMatrix
