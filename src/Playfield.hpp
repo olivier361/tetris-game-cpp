@@ -60,6 +60,14 @@ class Playfield : public Graphics::DrawableObject {
     // if there are no collisions.
     void moveRight();
 
+    // Rotate the active Tetromino clockwise
+    // if there are no collisions.
+    void rotateClockwise();
+
+    // Rotate the active Tetromino counterclockwise
+    // if there are no collisions.
+    void rotateCounterclockwise();
+
     // Drops the active Tetromino as far down as possible until either
     // a collision with another block or the bottom of the matrix occurs.
     void hardDrop();

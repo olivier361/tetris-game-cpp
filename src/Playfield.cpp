@@ -147,6 +147,24 @@ void Playfield::moveRight() {
     }
 }
 
+// Rotate the active Tetromino clockwise
+// if there are no collisions.
+void Playfield::rotateClockwise() {
+    if (!mIsGameRunning) {return;}
+
+    // TODO: Add collision checks
+    mTetrominoManager.rotate(1);
+}
+
+// Rotate the active Tetromino counterclockwise
+// if there are no collisions.
+void Playfield::rotateCounterclockwise() {
+    if (!mIsGameRunning) {return;}
+
+    // TODO: Add collision checks
+    mTetrominoManager.rotate(-1);
+}
+
 // Drops the active Tetromino as far down as possible until either
 // a collision with another block or the bottom of the matrix occurs.
 void Playfield::hardDrop() {

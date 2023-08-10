@@ -44,7 +44,7 @@ void onDropTimerWrapper(int value) {
 // The function called by GLUT to process ASCII key presses.
 void processNormalKeys(unsigned char key, int x, int y) {
 
-    // TODO: implement.
+    // TODO: implement ESC.
 
     if (key == 32) { // SPACEBAR
         Input::TetrisInput::sPlayfield->hardDrop();
@@ -60,5 +60,11 @@ void processNormalKeys(unsigned char key, int x, int y) {
     }
     else if (key == 80 || key == 112) { // P || p
         Input::TetrisInput::sPlayfield->pauseToggle();
+    }
+    else if (key == 81 || key == 113) { // Q || q
+        Input::TetrisInput::sPlayfield->rotateCounterclockwise();
+    }
+    else if (key == 87 || key == 119) { // W || w
+        Input::TetrisInput::sPlayfield->rotateClockwise();
     }
 }

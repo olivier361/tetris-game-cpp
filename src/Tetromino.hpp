@@ -93,6 +93,21 @@ class Tetromino : public Graphics::DrawableObject {
     // on the grid. This function does not check if a move is valid.
     void move(int x, int y);
 
+    // Rotates the active Tetromino based on its current orientation.
+    // The direction parameter indicates how many subsequent rotations should be done
+    // and its sign determine if it rotates clockwise (positive) or counterclockwise (negative).
+    // 
+    // USAGE:
+    // direction > 0 = clockwise ()
+    // direction < 0 = counterclockwise
+    // EX: rotate(-2) = two counterclockwise rotations.
+    //
+    // PRECONDITION: The caller must be in charge of checking that the
+    // rotation is valid in regards to the position on the grid
+    // and not clipping into borders or other blocks.
+    // This function does not check if a rotation is valid.
+    void rotate(int direction);
+
 }; // End of Tetromino class.
 
 

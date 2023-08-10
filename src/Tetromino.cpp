@@ -79,3 +79,33 @@ void Tetromino::move(int x, int y) {
     mCurLocation.x += x;
     mCurLocation.y += y;
 }
+
+// Rotates the active Tetromino based on its current orientation.
+// The direction parameter indicates how many subsequent rotations should be done
+// and its sign determine if it rotates clockwise (positive) or counterclockwise (negative).
+// 
+// USAGE:
+// direction > 0 = clockwise ()
+// direction < 0 = counterclockwise
+// EX: rotate(-2) = two counterclockwise rotations.
+//
+// PRECONDITION: The caller must be in charge of checking that the
+// rotation is valid in regards to the position on the grid
+// and not clipping into borders or other blocks.
+// This function does not check if a rotation is valid.
+void Tetromino::rotate(int direction) { 
+    const int sign = direction > 0 ? 1 : -1; // Changes computation for clockwise/counterclockwise
+
+    // Rotate once for each requested rotation.
+    for (int rotationCount = 0; rotationCount < abs(direction); ++rotationCount) {
+        // rotate for all blocks in the Tetromino
+        for (int i = 0; i < mCurShape.blocks.size(); ++i) {
+            // save tmp values
+            int x = mCurShape.blocks[i].x;
+            int y = mCurShape.blocks[i].y;
+
+            mCurShape.blocks[i].x = (-1 * sign) * y;
+            mCurShape.blocks[i].y = sign * x;
+        }
+    }
+}
