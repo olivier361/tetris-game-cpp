@@ -11,6 +11,7 @@ the player is awarded some points and the line is cleared making the lines above
 shift down a row. The goal is to get the highest score while avoiding that a block
 reaches the top most row of the play grid. Doing so results in a game over.
 
+
 [ BUILDING & INSTALLING THE SOFTWARE: ]
 
 The software can be built by following the instructions below:
