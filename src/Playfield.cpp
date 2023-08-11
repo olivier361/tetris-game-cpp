@@ -132,7 +132,7 @@ bool Playfield::pauseToggle() {
 void Playfield::moveLeft() {
     if (!mIsGameRunning) {return;}
 
-    if (!checkSideCollision(-1)) {
+    if (!checkCollision(-1,0,false,true)) {
         mTetrominoManager.move(-1,0);
     }
 }
@@ -142,7 +142,7 @@ void Playfield::moveLeft() {
 void Playfield::moveRight() {
     if (!mIsGameRunning) {return;}
 
-    if (!checkSideCollision(1)) {
+    if (!checkCollision(1,0,false,true)) {
         mTetrominoManager.move(1,0);
     }
 }
@@ -152,8 +152,9 @@ void Playfield::moveRight() {
 void Playfield::rotateClockwise() {
     if (!mIsGameRunning) {return;}
 
-    // TODO: Add collision checks
-    mTetrominoManager.rotate(1);
+    if (!checkCollision(0,0,true,true, mTetrominoManager.computeRotation(1))) {
+        mTetrominoManager.rotate(1);
+    }
 }
 
 // Rotate the active Tetromino counterclockwise
@@ -161,8 +162,9 @@ void Playfield::rotateClockwise() {
 void Playfield::rotateCounterclockwise() {
     if (!mIsGameRunning) {return;}
 
-    // TODO: Add collision checks
-    mTetrominoManager.rotate(-1);
+    if (!checkCollision(0,0,true,true, mTetrominoManager.computeRotation(-1))) {
+        mTetrominoManager.rotate(-1);
+    }
 }
 
 // Drops the active Tetromino as far down as possible until either
@@ -192,18 +194,28 @@ void Playfield::hardDrop() {
     }
 }
 
-// Checks if there is a collision at an N cells offset on the x axis on the side of the active Tetromino.
-// Returns true if there is a collision with a block or the side border of the matrix and false otherwise.
-// Ex: n = 1: checks for collision one to the right.
-//     n = -1: checks for collision one to the left.
-bool Playfield::checkSideCollision(int n) {
+// Checks if there is a collision at an x,y cell offset from the provided shape
+// at the location of the active Tetromino. Returns true if there is a collision with a block.
+// if CheckBottom or checkSides parameters are set to true, the function also
+// returns true if a collision with either of these matrix borders is detected.
+// False is returned otherwise.
+// NOTE: The shape parameter is used to check for collisions with a shape other than the current active Tetromino shape
+// (notably for checking rotation collisions). The new shape will still be checked for collisions
+// based on mCurLocation of the active Tetromino, plus any offset values given.
+// The version of this function without a shape parameter should be called to compare collisions with mCurShape.
+bool Playfield::checkCollision(int x, int y, bool checkBottom, bool checkSides, const Tetromino::Shape shape) {
     // for all blocks in the active Tetromino.
-    for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
-        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y; // cur row.
-        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x + n; // cell n besides cur column.
+    for (Tetromino::GridLocation curBlock : shape.blocks) {
+        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + y; // cur row + y.
+        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x + x; // cur column + x.
         
+        // Collision if already touching bottom of grid.
+        if (checkBottom && rowIndex >= Config::playfieldBlockHeight) {
+            return true;
+        }
+
         // Collision if already touching either side of grid.
-        if (colIndex < 0 || colIndex >= Config::playfieldBlockWidth) {
+        if (checkSides && (colIndex < 0 || colIndex >= Config::playfieldBlockWidth)) {
             return true;
         }
 
@@ -220,31 +232,13 @@ bool Playfield::checkSideCollision(int n) {
     return false; // no collision.
 }
 
-// Checks if there is a collision at N cells below the active Tetromino.
-// Returns true if there is a collision with a block or the bottom of the matrix
-// and false otherwise.
-bool Playfield::checkBottomCollision(int n) {
-    // for all blocks in the active Tetromino.
-    for (Tetromino::GridLocation curBlock : mTetrominoManager.mCurShape.blocks) {
-        int rowIndex = mTetrominoManager.mCurLocation.y + curBlock.y + n; // cell n below cur row.
-        int colIndex = mTetrominoManager.mCurLocation.x + curBlock.x; // cur column.
-        
-        // Collision if already touching bottom of grid.
-        if (rowIndex >= Config::playfieldBlockHeight) {
-            return true;
-        }
-
-        // ensure indices are within valid range.
-        if ((0 <= rowIndex && rowIndex < Config::playfieldBlockHeight) &&
-            (0 <= colIndex && colIndex < Config::playfieldBlockWidth)) {
-            
-            if (mMatrix[rowIndex][colIndex] != Config::BlockColor::Empty) {
-                return true; // collision with block detected.
-            }
-        }
-    }
-
-    return false; // no collision.
+// Checks if there is a collision at an x,y cell offset from the active Tetromino.
+// Returns true if there is a collision with a block.
+// if CheckBottom or checkSides parameters are set to true, the function also
+// returns true if a collision with either of these matrix borders is detected.
+// False is returned otherwise.
+bool Playfield::checkCollision(int x, int y, bool checkBottom, bool checkSides) {
+    return checkCollision(x, y, checkBottom, checkSides, mTetrominoManager.mCurShape);
 }
 
 // Drops the active Tetromino by one cell if no collisions are to occur below.
@@ -252,7 +246,7 @@ bool Playfield::checkBottomCollision(int n) {
 bool Playfield::tryDropOne() {
     // If there is a collision once cell below,
     // we cannot perform the drop.
-    if (checkBottomCollision(1)) {
+    if (checkCollision(0,1,true,false)) {
         return false;
     }
 
@@ -270,7 +264,7 @@ int Playfield::computeMaxDrop() {
 
     // for all matrix rows below the current location.
     for (int i = mTetrominoManager.mCurLocation.y + 1; i < Config::playfieldBlockHeight; ++i) {
-        if (checkBottomCollision(i - mTetrominoManager.mCurLocation.y)) {
+        if (checkCollision(0,i - mTetrominoManager.mCurLocation.y,true,false)) {
             return count;
         }
         ++count;

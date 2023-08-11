@@ -108,6 +108,18 @@ class Tetromino : public Graphics::DrawableObject {
     // This function does not check if a rotation is valid.
     void rotate(int direction);
 
+    // Computes and returns a shape object with the values of what the
+    // mCurShape object would look like once rotated.
+    // The direction parameter indicates how many subsequent rotations should be done
+    // and its sign determine if it rotates clockwise (positive) or counterclockwise (negative).
+    // 
+    // USAGE:
+    // direction > 0 = clockwise ()
+    // direction < 0 = counterclockwise
+    // 
+    // NOTE: This function does not modify the caller object.
+    Shape computeRotation(int direction) const;
+
 }; // End of Tetromino class.
 
 

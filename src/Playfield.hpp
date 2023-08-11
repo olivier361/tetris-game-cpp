@@ -72,16 +72,23 @@ class Playfield : public Graphics::DrawableObject {
     // a collision with another block or the bottom of the matrix occurs.
     void hardDrop();
 
-    // Checks if there is a collision at an N cells offset on the x axis on the side of the active Tetromino.
-    // Returns true if there is a collision with a block or the side border of the matrix and false otherwise.
-    // Ex: n = 1: checks for collision one to the right.
-    //     n = -1: checks for collision one to the left.
-    bool checkSideCollision(int n);
-    
-    // Checks if there is a collision at N cells below the active Tetromino.
-    // Returns true if there is a collision with a block or the bottom of the matrix
-    // and false otherwise.
-    bool checkBottomCollision(int n);
+    // Checks if there is a collision at an x,y cell offset from the provided shape
+    // at the location of the active Tetromino. Returns true if there is a collision with a block.
+    // if CheckBottom or checkSides parameters are set to true, the function also
+    // returns true if a collision with either of these matrix borders is detected.
+    // False is returned otherwise.
+    // NOTE: The shape parameter is used to check for collisions with a shape other than the current active Tetromino shape
+    // (notably for checking rotation collisions). The new shape will still be checked for collisions
+    // based on mCurLocation of the active Tetromino, plus any offset values given.
+    // The version of this function without a shape parameter should be called to compare collisions with mCurShape.
+    bool checkCollision(int x, int y, bool checkBottom, bool checkSides, const Tetromino::Shape shape);
+
+    // Checks if there is a collision at an x,y cell offset from the active Tetromino.
+    // Returns true if there is a collision with a block.
+    // if CheckBottom or checkSides parameters are set to true, the function also
+    // returns true if a collision with either of these matrix borders is detected.
+    // False is returned otherwise.
+    bool checkCollision(int x, int y, bool checkBottom, bool checkSides);
 
     // Drops the active Tetromino by one cell if no collisions are to occur below.
     // Returns true if the drop is successful and false otherwise.
