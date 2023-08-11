@@ -1,3 +1,4 @@
+#include <iostream>
 #include "TetrisInput.hpp"
 
 /// HELPER FUNCTION DECLARATIONS ///
@@ -43,10 +44,12 @@ void onDropTimerWrapper(int value) {
 
 // The function called by GLUT to process ASCII key presses.
 void processNormalKeys(unsigned char key, int x, int y) {
-
-    // TODO: implement ESC.
-
-    if (key == 32) { // SPACEBAR
+    if (key == 27) { // ESC
+        // Exit the program with success code.
+        std::cout << "Exited Tetris program.\n";
+        exit(0);
+    }
+    else if (key == 32) { // SPACEBAR
         Input::TetrisInput::sPlayfield->hardDrop();
     }
     else if (key == 65 || key == 97) { // A || a
