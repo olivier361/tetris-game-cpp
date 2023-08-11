@@ -38,19 +38,17 @@ class Tetromino : public Graphics::DrawableObject {
     GridLocation mCurLocation;  // the current location of the active Tetromino in grid coordinates.
     Shape mCurShape;            // the Tetromino shape of the currently active piece.
 
-    // TODO: add mCurRotation which keeps track of current rotation (or just modify values in mCurShape instead).
-
     // A vector that stores representations of each supported Tetromino type (i.e. Z,S,J,L,T,O,I Tetrominos).
     // Each Tetromino type is represented as a Shape (i.e. a color and a vector of block GridLocations
     // relative to the origin of the shape (0,0)).
     const std::vector<Shape> mTetrominoTypes = {
         {Config::BlockColor::Red, {{0,0}, {0,1}, {1,1}, {-1,0}}},       // Z
         {Config::BlockColor::Green, {{0,0}, {0,1}, {-1,1}, {1,0}}},     // S
-        {Config::BlockColor::Blue, {{0,0}, {1,0}, {-1,0}, {-1,-1}}},     // J
-        {Config::BlockColor::Orange, {{0,0}, {1,0}, {-1,0}, {1,-1}}},    // L
-        {Config::BlockColor::Purple, {{0,0}, {0,-1}, {1,0}, {-1,0}}},    // T
+        {Config::BlockColor::Blue, {{0,0}, {1,0}, {-1,0}, {-1,-1}}},    // J
+        {Config::BlockColor::Orange, {{0,0}, {1,0}, {-1,0}, {1,-1}}},   // L
+        {Config::BlockColor::Purple, {{0,0}, {0,-1}, {1,0}, {-1,0}}},   // T
         {Config::BlockColor::Yellow, {{0,0}, {0,1}, {1,0}, {1,1}}},     // O
-        {Config::BlockColor::Cyan, {{0,0}, {1,0}, {-1,0}, {-2,0}}},      // I
+        {Config::BlockColor::Cyan, {{0,0}, {1,0}, {-1,0}, {-2,0}}},     // I
     };
 
     /// CONSTRUCTORS ///

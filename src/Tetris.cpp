@@ -26,11 +26,5 @@ int main(int argc, char** argv) {
 
     window.displayLoop();
     
-    // TODO: Delete memory for gameMatrix to avoid memory leaks
-
-    std::cout << "graphics window created!\n";
-
-    // TODO: Implement GlutCloseFunc somewhere. Runs code as the windows is closed with X. Do cleanup steps.
-    
     return 0;
 }

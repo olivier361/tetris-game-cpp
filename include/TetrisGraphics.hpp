@@ -108,8 +108,6 @@ namespace Graphics {
         /// @param text: the string to render.
         static void drawHeader(double tlx, double tly, const double rgba[4], const char text[]);
 
-        // TODO: Write graphics methods to draw things
-
 
         /// HELPER FUNCTIONS ///
 

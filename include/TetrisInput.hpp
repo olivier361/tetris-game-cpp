@@ -1,9 +1,6 @@
 #ifndef TETRIS_INPUT_HPP
 #define TETRIS_INPUT_HPP
 
-// #include <GL/gl.h>
-// #include <GL/glu.h>
-// #include <GL/glut.h>
 #include <GL/freeglut.h>
 #include "../src/Config.hpp"
 #include "../src/Playfield.hpp"
